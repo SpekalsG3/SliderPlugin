@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Plugin</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		div#slider {
+			position: relative;
+		}
+		div#slider div.pointer {
+			position: relative;
+			top: 19px;
+			left: 0;
+			width: 20px;
+			height: 20px;
+			border-radius: 50px;
+			background: #e85f3e;
+		}
+
+		div#slider div.hint {
+			position: absolute;
+			top: -32px;
+			left: -8px;
+			width: 35px;
+			height: 24px;
+			font-size: 10px;
+			text-align: center;
+			line-height: 24px;
+			background: #e85f3e;
+			border-radius: 5px;
+		}
+		div#slider div.hint div {
+			position: absolute;
+			top: 24px;
+			left: 13px;
+			width: 0;
+			height: 0;
+			border-left: 5px solid transparent;
+			border-right: 5px solid transparent;
+			border-top: 4px solid #e85f3e;
+		}
+
+		div#slider div.bar {
+			position: relative;
+			top: 31px;
+			left: 10px;
+			width: 260px;
+			height: 5px;
+			border-radius: 10px;
+			background: #f3f3f3;
+		}
+	</style>
+</head>
+<body>
+	<div id="slider">
+		<div class="bar">
+			<div class="colored"></div>
+		</div>
+		<div class="pointer">
+			<div class="hint">
+				<div></div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="jQuery.js"></script>
+	<script type="text/javascript" src="jQuerySliderPlugin.js"></script>
+</body>
+</html>
