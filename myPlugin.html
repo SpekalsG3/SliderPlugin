@@ -4,12 +4,14 @@
 	<title>My Plugin</title>
 	<meta charset="utf-8">
 	<style type="text/css">
-		div#slider {
+		div.slider {
 			position: relative;
+			width: 287px;
+			height: 52px;
 		}
-		div#slider div.pointer {
+		div.slider div.pointer {
 			position: relative;
-			top: 19px;
+			top: 27px;
 			left: 0;
 			width: 20px;
 			height: 20px;
@@ -17,19 +19,22 @@
 			background: #e85f3e;
 		}
 
-		div#slider div.hint {
-			position: absolute;
+		div.slider div.hint {
+			position: relative;
 			top: -32px;
 			left: -8px;
 			width: 35px;
 			height: 24px;
 			font-size: 10px;
+			color: white;
 			text-align: center;
 			line-height: 24px;
 			background: #e85f3e;
 			border-radius: 5px;
+			pointer-events: none;
+
 		}
-		div#slider div.hint div {
+		div.slider div.hint div {
 			position: absolute;
 			top: 24px;
 			left: 13px;
@@ -40,9 +45,9 @@
 			border-top: 4px solid #e85f3e;
 		}
 
-		div#slider div.bar {
+		div.slider div.bar {
 			position: relative;
-			top: 31px;
+			top: 40px;
 			left: 10px;
 			width: 260px;
 			height: 5px;
@@ -52,7 +57,27 @@
 	</style>
 </head>
 <body>
-	<div id="slider">
+	<div class="slider">
+		<div class="bar">
+			<div class="colored"></div>
+		</div>
+		<div class="pointer">
+			<div class="hint">
+				<div></div>
+			</div>
+		</div>
+	</div>
+	<div class="slider">
+		<div class="bar">
+			<div class="colored"></div>
+		</div>
+		<div class="pointer">
+			<div class="hint">
+				<div></div>
+			</div>
+		</div>
+	</div>
+	<div class="slider">
 		<div class="bar">
 			<div class="colored"></div>
 		</div>
