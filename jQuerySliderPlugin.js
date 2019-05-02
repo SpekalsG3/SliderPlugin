@@ -1,12 +1,28 @@
 (function($) {
-	$.fn.myPlugin = function(min, max, step = 1, startPoint = min, track = true, orientation = "horizontal", hud = true, interval = 4, hint = false) {
+	$.fn.myPlugin = function(min, max, step = 1, startPoint = min, orientation = "horizontal", hint = false, hud = true, interval = 4, track = true) {
 
 		this.startDragCheck = false;
-		step *= 260 / (max-min);
 
-		this.each(function(i) {
+		this.each(function() {
 			this.children[1].children[0].innerHTML = startPoint;
-			this.children[1].style.left = (startPoint - min) * 260 / (max - min) + "px";
+			this.step = step * parseInt($(this.children[0]).css("width")) / (max-min);
+			if (startPoint > min && startPoint <= max) {
+				var indent = (startPoint - min) * parseInt($(this.children[0]).css("width")) / (max - min);
+				this.children[1].style.left = indent + "px";
+				this.children[0].children[0].style.width = indent + "px";
+			}
+
+			if (hint) {
+				this.children[1].children[0].style.display = "block";
+			} else {
+				this.children[1].children[0].style.display = "none";
+			}
+
+			if (track) {
+				this.children[0].children[0].style.display = "block";
+			} else {
+				this.children[0].children[0].style.display = "none";
+			}
 		});
 
 		this.mousedown(function(e) {
@@ -21,16 +37,12 @@
 
 		this.mousemove(function(e) {
 			if (this.startDragCheck) {
-
-				/*if (!Object.values($(".pointer")).includes(e.target)) {
-					this.startDragCheck = false;
-					return;
-				}*/
-
-				var move = Math.round((e.clientX - this.started - 8) / step) * step;
-				if (move >= 0 && move <= 260) {
-					this.children[1].children[0].innerHTML = (max - min) * move / 260 + min; //move + min;
+				var move = Math.round((e.clientX - this.started - 8) / this.step) * this.step;
+				
+				if (move >= 0 && move <= parseInt($(this.children[0]).css("width"))) {
+					this.children[1].children[0].innerHTML = (max - min) * move / parseInt($(this.children[0]).css("width")) + min;
 					this.children[1].style.left = move + "px";
+					this.children[0].children[0].style.width = move + "px";
 				}
 			}
 		});
@@ -45,4 +57,4 @@
 	}
 })(jQuery);
 
-$(".slider").myPlugin(100, 200, 10, 150);
+$(".slider").myPlugin(100, 200, 10, 120, "horizontal", true, true, 4, true);

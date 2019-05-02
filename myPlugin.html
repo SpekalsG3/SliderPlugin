@@ -34,7 +34,8 @@
 			pointer-events: none;
 
 		}
-		div.slider div.hint div {
+		div.slider div.hint:before {
+			content: "";
 			position: absolute;
 			top: 24px;
 			left: 13px;
@@ -47,12 +48,19 @@
 
 		div.slider div.bar {
 			position: relative;
+			overflow: hidden;
 			top: 40px;
 			left: 10px;
 			width: 260px;
 			height: 5px;
 			border-radius: 10px;
 			background: #f3f3f3;
+		}
+
+		div.slider div.colored {
+			height: 100%;
+			background: #e85f3e;
+			width: 0;
 		}
 	</style>
 </head>
@@ -63,7 +71,6 @@
 		</div>
 		<div class="pointer">
 			<div class="hint">
-				<div></div>
 			</div>
 		</div>
 	</div>
@@ -73,7 +80,6 @@
 		</div>
 		<div class="pointer">
 			<div class="hint">
-				<div></div>
 			</div>
 		</div>
 	</div>
@@ -83,7 +89,6 @@
 		</div>
 		<div class="pointer">
 			<div class="hint">
-				<div></div>
 			</div>
 		</div>
 	</div>
