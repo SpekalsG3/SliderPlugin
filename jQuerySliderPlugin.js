@@ -1,5 +1,5 @@
 (function($) {
-	$.fn.myPlugin = function(min, max, step = 1, startPoint = min, orientation = "horizontal", hint = false, hud = true, interval = 5, track = true) {
+	$.fn.myPlugin = function(min, max, step = 1, startPoint = min, orientation = "row", mainColor = "#e85f3e", hint = false, hud = true, interval = 5, track = true) {
 
 		this.startDragCheck = false;
 
@@ -8,10 +8,18 @@
 				return false;
 			}
 
-			this.children[1].children[0].innerHTML = min;
+			this.className = "slider " + orientation;
+
+			this.children[0].children[0].style.background = mainColor;
+			this.children[1].style.background = mainColor;
+			this.children[1].children[0].style.background = mainColor;
+			this.children[1].children[0].children[0].style.borderBottom = "4px solid " + mainColor;
+
+			this.children[1].children[0].innerHTML = "<div></div>" + min;
 			this.step = step * parseInt($(this.children[0]).css("width")) / (max-min);
-			if (startPoint > min && startPoint <= max) {
-				this.children[1].children[0].innerHTML = startPoint;
+
+			if (startPoint > min && startPoint < max) {
+				this.children[1].children[0].innerHTML = "<div></div>" + startPoint;
 				var indent = (startPoint - min) * parseInt($(this.children[0]).css("width")) / (max - min) + 8;
 				this.children[1].style.left = indent + "px";
 				this.children[0].children[0].style.width = indent + "px";
@@ -40,6 +48,9 @@
 			}
 		});
 
+		this.set = function(param, value) {
+		}
+
 		this.mousedown(function(e) {
 			if (!Object.values($(".pointer")).includes(e.target)) {
 				this.startDragCheck = false;
@@ -55,7 +66,7 @@
 				var move = Math.round((e.clientX - this.started - 16) / this.step) * this.step;
 				
 				if (move >= 0 && move <= parseInt($(this.children[0]).css("width"))) {
-					this.children[1].children[0].innerHTML = (max - min) * move / parseInt($(this.children[0]).css("width")) + min;
+					this.children[1].children[0].innerHTML = "<div></div>" + ((max - min) * move / parseInt($(this.children[0]).css("width")) + min);
 					this.children[1].style.left = move + 8 + "px";
 					this.children[0].children[0].style.width = move + 8 + "px";
 				}
@@ -72,4 +83,6 @@
 	}
 })(jQuery);
 
-$(".slider").myPlugin(0, 200, 5, 120, "horizontal", true, false, 4, true);
+$("#default").myPlugin(0, 1000);
+$(".similarSliders").myPlugin(0, 200, 5, 120, "row", "#ff6b6b",  true, false, 4, true);
+$("#blueBigSlider").myPlugin(200, 500, 100, 250, "row", "#afded7",  true, true, 6, true);
