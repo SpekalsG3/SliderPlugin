@@ -1,0 +1,124 @@
+div.slider.row {
+	width: 295px;
+	height: 68px;
+}
+div.slider.row div.pointer {
+	top: 27px;
+	left: 8px;
+}
+div.slider.row div.hint {
+	top: -32px;
+	left: -8px;
+}
+div.slider.row div.hint div {
+	top: 24px;
+	left: 13px;
+	border-right: 5px solid transparent;
+	border-left: 5px solid transparent;
+}
+div.slider.row div.bar {
+	top: 40px;
+	left: 18px;
+	width: 260px;
+	height: 5px;
+}
+div.slider.row div.bar div.colored {
+	height: 100%;
+	width: 0;
+}
+div.slider.row div.hud {
+	position: relative;
+	bottom: -27px;
+	height: 16px;
+	left: 16px;
+	width: 268px;
+	flex-direction: row;
+}
+
+div.slider.column {
+	width: 68px;
+	height: 295px;
+}
+div.slider.column div.pointer {
+	background: #e85f3e;
+	top: 0;
+	left: 17px;
+}
+div.slider.column div.hint {
+	background: #e85f3e;
+	left: 27px;
+	top: -2px;
+}
+div.slider.column div.hint div {
+	top: 7px;
+	left: -4px;
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	border-right: 4px solid #e85f3e;
+}
+div.slider.column div.bar {
+	top: 8px;
+	left: 25px;
+	width: 5px;
+	height: 260px;
+}
+div.slider.column div.bar div.colored {
+	height: 100%;
+	width: 0;
+}
+div.slider.column div.hud {
+	position: absolute;
+	top: 6px;
+	height: 269px;
+	width: 16px;
+	flex-direction: column;
+}
+
+
+
+div.slider {
+	position: relative;
+}
+div.slider div.pointer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 20px;
+	height: 20px;
+	border-radius: 50px;
+}
+
+div.slider div.hint {
+	position: relative;
+	width: 35px;
+	height: 24px;
+	font-size: 10px;
+	color: white;
+	text-align: center;
+	line-height: 24px;
+	border-radius: 5px;
+	pointer-events: none;
+
+}
+div.slider div.hint div {
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+}
+
+div.slider div.bar {
+	position: relative;
+	overflow: hidden;
+	border-radius: 10px;
+	background: #f3f3f3;
+}
+
+div.slider div.hud {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: #a7a7a7;
+	font-size: 8px;
+}
