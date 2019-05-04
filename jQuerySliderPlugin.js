@@ -1,5 +1,5 @@
 (function($) {
-	$.fn.myPlugin = function(min, max, step = 1, startPoint = min, orientation = "row", mainColor = "#e85f3e", hint = false, hud = true, interval = 5, track = true) {
+	$.fn.myPlugin = function(min, max, step = 1, startPoint = min, orientation = "row", mainColor = "#e85f3e", hint = true, hud = true, interval = 5, track = true) {
 
 		this.startDragCheck = false;
 
@@ -8,18 +8,17 @@
 				return false;
 			}
 
-			this.className = "slider " + orientation;
+			this.classList.add(orientation);
 
 			this.children[0].children[0].style.background = mainColor;
 			this.children[1].style.background = mainColor;
 			this.children[1].children[0].style.background = mainColor;
-			this.children[1].children[0].children[0].style.borderBottom = "4px solid " + mainColor;
 
-			this.children[1].children[0].innerHTML = "<div></div>" + min;
+			this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + mainColor + ';"></div>' + min;
 			this.step = step * parseInt($(this.children[0]).css("width")) / (max-min);
 
 			if (startPoint > min && startPoint < max) {
-				this.children[1].children[0].innerHTML = "<div></div>" + startPoint;
+				this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + mainColor + ';"></div>' + startPoint;
 				var indent = (startPoint - min) * parseInt($(this.children[0]).css("width")) / (max - min) + 8;
 				this.children[1].style.left = indent + "px";
 				this.children[0].children[0].style.width = indent + "px";
@@ -66,7 +65,7 @@
 				var move = Math.round((e.clientX - this.started - 16) / this.step) * this.step;
 				
 				if (move >= 0 && move <= parseInt($(this.children[0]).css("width"))) {
-					this.children[1].children[0].innerHTML = "<div></div>" + ((max - min) * move / parseInt($(this.children[0]).css("width")) + min);
+					this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + mainColor + ';"></div>' + Math.floor((max - min) * move / parseInt($(this.children[0]).css("width")) + min);
 					this.children[1].style.left = move + 8 + "px";
 					this.children[0].children[0].style.width = move + 8 + "px";
 				}

@@ -3,7 +3,7 @@ div.slider.row {
 	height: 68px;
 }
 div.slider.row div.pointer {
-	top: 27px;
+	top: 32px;
 	left: 8px;
 }
 div.slider.row div.hint {
@@ -28,7 +28,7 @@ div.slider.row div.bar div.colored {
 }
 div.slider.row div.hud {
 	position: relative;
-	bottom: -27px;
+	top: 47px;
 	height: 16px;
 	left: 16px;
 	width: 268px;
@@ -54,7 +54,7 @@ div.slider.column div.hint div {
 	left: -4px;
 	border-top: 5px solid transparent;
 	border-bottom: 5px solid transparent;
-	border-right: 4px solid #e85f3e;
+	/*border-right: 4px solid #e85f3e;*/
 }
 div.slider.column div.bar {
 	top: 8px;
@@ -81,8 +81,6 @@ div.slider {
 }
 div.slider div.pointer {
 	position: absolute;
-	top: 0;
-	left: 0;
 	width: 20px;
 	height: 20px;
 	border-radius: 50px;
