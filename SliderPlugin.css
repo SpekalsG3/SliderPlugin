@@ -1,3 +1,13 @@
+body {
+	display: flex;
+	justify-content: center;
+}
+div.container {
+	width: 300px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
 div.slider.row {
 	width: 295px;
 	height: 68px;
@@ -36,12 +46,12 @@ div.slider.row div.hud {
 }
 
 div.slider.column {
-	width: 68px;
-	height: 295px;
+	width: 79px;
+	height: 284px;
 }
 div.slider.column div.pointer {
 	background: #e85f3e;
-	top: 0;
+	top: 2px;
 	left: 17px;
 }
 div.slider.column div.hint {
@@ -63,8 +73,8 @@ div.slider.column div.bar {
 	height: 260px;
 }
 div.slider.column div.bar div.colored {
-	height: 100%;
-	width: 0;
+	height: 0;
+	width: 100%;
 }
 div.slider.column div.hud {
 	position: absolute;
@@ -90,7 +100,7 @@ div.slider div.hint {
 	position: relative;
 	width: 35px;
 	height: 24px;
-	font-size: 10px;
+	font-size: 12px;
 	color: white;
 	text-align: center;
 	line-height: 24px;
@@ -118,5 +128,5 @@ div.slider div.hud {
 	justify-content: space-between;
 	align-items: center;
 	color: #a7a7a7;
-	font-size: 8px;
+	font-size: 10px;
 }
