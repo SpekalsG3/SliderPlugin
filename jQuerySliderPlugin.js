@@ -8,6 +8,9 @@
 				return false;
 			}
 
+			this.settings = [min, max, step, startPoint, orientation, mainColor, hint, hud,
+			interval, track];
+
 			this.classList.add(orientation);
 
 			this.children[0].children[0].style.background = mainColor;
@@ -111,8 +114,8 @@
 	}
 })(jQuery);
 
-$("#default").AnimateSlider(0, 1000);
-$(".similarSliders").AnimateSlider(0, 200, 5, 120, "row", "#ff6b6b",  true, true, 4, false);
+$("#default").AnimateSlider(-100, 100);
+$(".similarSliders").AnimateSlider(0, 200, 5, 120, "row", "#ff6b6b",  false, true, 4, false);
 $("#blueBigSlider").AnimateSlider(200, 500, 100, 250, "row", "#afded7",  true, false, 6, true);
 $("#columnSliderOne").AnimateSlider(5, 10, 1, 0, "column", "#8dc79d", true, true, 5, true);
 $("#columnSliderTwo").AnimateSlider(10, 200, 2, 100, "column", "#7d4db7", false, true, 2, false);

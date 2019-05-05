@@ -1,13 +1,3 @@
-body {
-	display: flex;
-	justify-content: center;
-}
-div.container {
-	width: 300px;
-	display: flex;
-	flex-wrap: wrap;
-}
-
 div.slider.row {
 	width: 295px;
 	height: 68px;
