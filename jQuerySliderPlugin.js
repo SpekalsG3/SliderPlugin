@@ -8,8 +8,11 @@
 				return false;
 			}
 
-			this.settings = [min, max, step, startPoint, orientation, mainColor, hint, hud,
-			interval, track];
+			this.set = function(param, value) {
+				console.log(param + ": " + value);
+			}
+
+			this.settings = [min, max, step, startPoint, orientation, mainColor, hint, hud, interval, track];
 
 			this.classList.add(orientation);
 
@@ -61,9 +64,6 @@
 				this.children[2].style.display = "none";
 			}
 		});
-
-		this.set = function(param, value) {
-		}
 
 		this.mousedown(function(e) {
 			if (!Object.values($(".pointer")).includes(e.target)) {
