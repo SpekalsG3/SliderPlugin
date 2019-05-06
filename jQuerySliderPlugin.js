@@ -8,60 +8,111 @@
 				return false;
 			}
 
+			this.min = min;
+			this.max = max;
+			this.orientation = orientation;
+
+			this.setColor = function(color) {
+				this.children[0].children[0].style.background = color;
+				this.children[1].style.background = color;
+				this.children[1].children[0].style.background = color;
+
+				if (this.children[1].children[0].children[0].style.borderTop == "") {
+					this.children[1].children[0].children[0].style.borderRight = "4px solid" + color;
+				} else {
+					this.children[1].children[0].children[0].style.borderTop = "4px solid" + color;
+				}
+
+				this.mainColor = color;
+			}
+
+			this.displayPart = function(el, flag, displayType = "block") {
+				if (flag) {
+					el.style.display = displayType;
+				} else {
+					el.style.display = "none";
+				}
+			}
+
+			this.setHudPoints = function(int) {
+				this.children[2].innerHTML = "";
+				for (var i = 0; i < int; i++) {
+					$(this.children[2]).append("<div>" + Math.floor(this.min + (this.max-this.min) / (int-1) * i) + "</div>");
+				}
+			}
+
 			this.set = function(param, value) {
-				console.log(param + ": " + value);
+				//console.log(param + ": " + value);
+
+				switch (param) {
+					case "min":
+						this.min = value;
+						break;
+					case "max":
+						this.max = value;
+						break;
+					case "step":
+						if (this.orientation == "row") {
+							this.step = value * parseInt($(this.children[0]).css("width")) / (this.max-this.min);
+						} else {
+							this.step = value * parseInt($(this.children[0]).css("height")) / (this.max-this.min);
+						}
+						break;
+					case "startPoint":
+						break;
+					case "orientation":
+						break;
+					case "mainColor":
+						this.setColor(value);
+						break;
+					case "hint":
+						this.displayPart(this.children[1].children[0], value);
+						break;
+					case "hud":
+						this.displayPart(this.children[2], value, "flex");
+						break;
+					case "interval":
+						this.setHudPoints(value);
+						break;
+					case "track":
+						this.displayPart(this.children[0].children[0], value);
+						break;
+
+				}
 			}
 
 			this.settings = [min, max, step, startPoint, orientation, mainColor, hint, hud, interval, track];
 
+			this.setColor(mainColor);
+
+			this.displayPart(this.children[1].children[0], hint);
+			this.displayPart(this.children[2], hud, "flex");
+			this.displayPart(this.children[0].children[0], track);
+
+			this.setHudPoints(interval);
+
 			this.classList.add(orientation);
 
-			this.children[0].children[0].style.background = mainColor;
-			this.children[1].style.background = mainColor;
-			this.children[1].children[0].style.background = mainColor;
-
-			if (orientation == "row") {
-				this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + mainColor + ';"></div>' + min;
+			if (this.orientation == "row") {
+				this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + min;
 				this.step = step * parseInt($(this.children[0]).css("width")) / (max-min);
 			} else {
-				this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + mainColor + ';"></div>' + min;
+				this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + min;
 				this.step = step * parseInt($(this.children[0]).css("height")) / (max-min);
 			}
 
-			if (startPoint > min && startPoint < max) {
-				if (orientation == "row") {
-					this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + mainColor + ';"></div>' + startPoint;
+			if (startPoint > min && startPoint <= max) {
+				if (this.orientation == "row") {
+					this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + startPoint;
 					var indent = (startPoint - min) * parseInt($(this.children[0]).css("width")) / (max - min) + 8;
 					this.children[1].style.left = indent + "px";
 					this.children[0].children[0].style.width = indent + "px";
 				} else {
-					this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + mainColor + ';"></div>' + startPoint;
+					this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + startPoint;
 					var indent = (startPoint - min) * parseInt($(this.children[0]).css("height")) / (max - min) + 8;
 					this.children[1].style.top = indent + "px";
 					this.children[0].children[0].style.height = indent + "px";
 				}
-			}
-
-			for (var i = 0; i < interval; i++) {
-				$(this.children[2]).append("<div>" + Math.floor(min + (max-min) / (interval-1) * i) + "</div>");
-			}
-
-			if (hint) {
-				this.children[1].children[0].style.display = "block";
-			} else {
-				this.children[1].children[0].style.display = "none";
-			}
-
-			if (track) {
-				this.children[0].children[0].style.display = "block";
-			} else {
-				this.children[0].children[0].style.display = "none";
-			}
-
-			if (hud) {
-				this.children[2].style.display = "flex";
-			} else {
-				this.children[2].style.display = "none";
 			}
 		});
 
@@ -71,7 +122,7 @@
 				return;
 			}
 
-			if (orientation == "row") {
+			if (this.orientation == "row") {
 				this.started = $(this).position().left;
 			} else {
 				this.started = $(this).position().top;
@@ -82,21 +133,21 @@
 		this.mousemove(function(e) {
 			if (this.startDragCheck) {
 				var move;
-				if (orientation == "row") {
+				if (this.orientation == "row") {
 					move = Math.round((e.pageX - this.started - 16) / this.step) * this.step;
 				} else {
 					move = Math.round((e.pageY - this.started - 10) / this.step) * this.step;
 				}
 				
-				if (orientation == "row") {
+				if (this.orientation == "row") {
 					if (move >= 0 && move <= parseInt($(this.children[0]).css("width"))) {
-						this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + mainColor + ';"></div>' + Math.floor((max - min) * move / parseInt($(this.children[0]).css("width")) + min);
+						this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + Math.floor((max - min) * move / parseInt($(this.children[0]).css("width")) + min);
 						this.children[1].style.left = move + 8 + "px";
 						this.children[0].children[0].style.width = move + 8 + "px";
 					}
 				} else {
 					if (move >= 0 && move <= parseInt($(this.children[0]).css("height"))) {
-						this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + mainColor + ';"></div>' + Math.floor((max - min) * move / parseInt($(this.children[0]).css("height")) + min);
+						this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + Math.floor((max - min) * move / parseInt($(this.children[0]).css("height")) + min);
 						this.children[1].style.top = move + 2 + "px";
 						this.children[0].children[0].style.height = move + 2 + "px";
 					}
