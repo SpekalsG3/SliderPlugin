@@ -9,6 +9,7 @@
 			}
 
 			this.value = startPoint;
+			this.stepValue = step;
 
 			this.min = min;
 			this.max = max;
@@ -44,7 +45,7 @@
 				}
 			}
 
-			this.setStep = function(value = this.step) {
+			this.setStep = function(value = this.stepValue) {
 				if (this.orientation == "row") {
 					this.step = value * parseInt($(this.children[0]).css("width")) / (this.max-this.min);
 				} else {
@@ -52,15 +53,36 @@
 				}
 			}
 
-			this.setMinMax = function() {
+			this.setMinMax = function(newMin, newMax) {
+				console.log(this.pos + " " + step);
+				var checkMin = (this.pos + step * (newMin > this.min) > 8),
+					checkMax = (this.pos + step * (newMax > this.max) < parseInt($(this.children[0]).css("width")) + 8);
+
+				this.min = newMin;
+				this.max = newMax;
+
 				if (this.orientation == "row") {
 					this.pos = (this.value - this.min) * parseInt($(this.children[0]).css("width")) / (this.max - this.min) + 8;
-					this.children[0].children[0].style.width = this.pos + "px";
-					this.children[1].style.left = this.pos + "px";
+
+					if (checkMin && checkMax) {
+						this.children[0].children[0].style.width = this.pos + "px";
+						this.children[1].style.left = this.pos + "px";
+					} else if (checkMax) {
+						this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + this.min;
+					} else if (checkMin) {
+						this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + this.max;
+					}
 				} else {
 					this.pos = (this.value - this.min) * parseInt($(this.children[0]).css("height")) / (this.max - this.min) + 8;
-					this.children[1].style.top = this.pos + "px";
-					this.children[0].children[0].style.height = this.pos + "px";
+
+					if (checkMin && checkMax) {
+						this.children[0].children[0].style.height = this.pos + "px";
+						this.children[1].style.top = this.pos + "px";
+					} else if (checkMin) {
+							this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + this.min;
+					} else if (checkMax) {
+						this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + this.max;
+					}
 				}
 				this.setStep();
 				this.setHudPoints();
@@ -71,12 +93,10 @@
 
 				switch (param) {
 					case "min":
-						this.min = parseInt(value);
-						this.setMinMax();
+						this.setMinMax(parseInt(value), this.max);
 						break;
 					case "max":
-						this.max = parseInt(value);
-						this.setMinMax();
+						this.setMinMax(this.min, parseInt(value));
 						break;
 					case "step":
 						this.setStep(parseInt(value));
