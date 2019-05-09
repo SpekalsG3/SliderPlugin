@@ -8,8 +8,11 @@
 				return false;
 			}
 
+			this.value = startPoint;
+
 			this.min = min;
 			this.max = max;
+			this.pos = (startPoint - this.min) * parseInt($(this.children[0]).css("width")) / (this.max - this.min) + 8;
 			this.orientation = orientation;
 
 			this.setColor = function(color) {
@@ -34,11 +37,33 @@
 				}
 			}
 
-			this.setHudPoints = function(int) {
+			this.setHudPoints = function() {
 				this.children[2].innerHTML = "";
-				for (var i = 0; i < int; i++) {
-					$(this.children[2]).append("<div>" + Math.floor(this.min + (this.max-this.min) / (int-1) * i) + "</div>");
+				for (var i = 0; i < this.interval; i++) {
+					$(this.children[2]).append("<div>" + Math.floor(this.min + (this.max-this.min) / (this.interval-1) * i) + "</div>");
 				}
+			}
+
+			this.setStep = function(value = this.step) {
+				if (this.orientation == "row") {
+					this.step = value * parseInt($(this.children[0]).css("width")) / (this.max-this.min);
+				} else {
+					this.step = value * parseInt($(this.children[0]).css("height")) / (this.max-this.min);
+				}
+			}
+
+			this.setMinMax = function() {
+				if (this.orientation == "row") {
+					this.pos = (this.value - this.min) * parseInt($(this.children[0]).css("width")) / (this.max - this.min) + 8;
+					this.children[0].children[0].style.width = this.pos + "px";
+					this.children[1].style.left = this.pos + "px";
+				} else {
+					this.pos = (this.value - this.min) * parseInt($(this.children[0]).css("height")) / (this.max - this.min) + 8;
+					this.children[1].style.top = this.pos + "px";
+					this.children[0].children[0].style.height = this.pos + "px";
+				}
+				this.setStep();
+				this.setHudPoints();
 			}
 
 			this.set = function(param, value) {
@@ -46,17 +71,15 @@
 
 				switch (param) {
 					case "min":
-						this.min = value;
+						this.min = parseInt(value);
+						this.setMinMax();
 						break;
 					case "max":
-						this.max = value;
+						this.max = parseInt(value);
+						this.setMinMax();
 						break;
 					case "step":
-						if (this.orientation == "row") {
-							this.step = value * parseInt($(this.children[0]).css("width")) / (this.max-this.min);
-						} else {
-							this.step = value * parseInt($(this.children[0]).css("height")) / (this.max-this.min);
-						}
+						this.setStep(parseInt(value));
 						break;
 					case "startPoint":
 						break;
@@ -72,7 +95,8 @@
 						this.displayPart(this.children[2], value, "flex");
 						break;
 					case "interval":
-						this.setHudPoints(value);
+						this.interval = value;
+						this.setHudPoints();
 						break;
 					case "track":
 						this.displayPart(this.children[0].children[0], value);
@@ -89,30 +113,25 @@
 			this.displayPart(this.children[2], hud, "flex");
 			this.displayPart(this.children[0].children[0], track);
 
-			this.setHudPoints(interval);
+			this.interval = interval;
+			this.setHudPoints();
 
 			this.classList.add(orientation);
 
 			if (this.orientation == "row") {
-				this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + min;
-				this.step = step * parseInt($(this.children[0]).css("width")) / (max-min);
+				this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + this.min;
 			} else {
-				this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + min;
-				this.step = step * parseInt($(this.children[0]).css("height")) / (max-min);
+				this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + this.min;
 			}
+			this.setStep(step);
 
-			if (startPoint > min && startPoint <= max) {
+			if (startPoint > this.min && startPoint <= this.max) {
 				if (this.orientation == "row") {
 					this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + startPoint;
-					var indent = (startPoint - min) * parseInt($(this.children[0]).css("width")) / (max - min) + 8;
-					this.children[1].style.left = indent + "px";
-					this.children[0].children[0].style.width = indent + "px";
 				} else {
 					this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + startPoint;
-					var indent = (startPoint - min) * parseInt($(this.children[0]).css("height")) / (max - min) + 8;
-					this.children[1].style.top = indent + "px";
-					this.children[0].children[0].style.height = indent + "px";
 				}
+				this.setMinMax();
 			}
 		});
 
@@ -141,14 +160,17 @@
 				
 				if (this.orientation == "row") {
 					if (move >= 0 && move <= parseInt($(this.children[0]).css("width"))) {
-						this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + Math.floor((max - min) * move / parseInt($(this.children[0]).css("width")) + min);
+						this.value = Math.floor((this.max - this.min) * move / parseInt($(this.children[0]).css("width")) + this.min);
+						this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + this.value;
 						this.children[1].style.left = move + 8 + "px";
+						this.pos = move+8;
 						this.children[0].children[0].style.width = move + 8 + "px";
 					}
 				} else {
 					if (move >= 0 && move <= parseInt($(this.children[0]).css("height"))) {
-						this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + Math.floor((max - min) * move / parseInt($(this.children[0]).css("height")) + min);
+						this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + Math.floor((this.max - this.min) * move / parseInt($(this.children[0]).css("height")) + this.min);
 						this.children[1].style.top = move + 2 + "px";
+						this.pos = move+2;
 						this.children[0].children[0].style.height = move + 2 + "px";
 					}
 				}
@@ -164,9 +186,3 @@
 
 	}
 })(jQuery);
-
-$("#default").AnimateSlider(-100, 100);
-$(".similarSliders").AnimateSlider(0, 200, 5, 120, "row", "#ff6b6b",  false, true, 4, false);
-$("#blueBigSlider").AnimateSlider(200, 500, 100, 250, "row", "#afded7",  true, false, 6, true);
-$("#columnSliderOne").AnimateSlider(5, 10, 1, 0, "column", "#8dc79d", true, true, 5, true);
-$("#columnSliderTwo").AnimateSlider(10, 200, 2, 100, "column", "#7d4db7", false, true, 2, false);
