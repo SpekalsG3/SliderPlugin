@@ -53,15 +53,16 @@
 				}
 			}
 
-			this.setMinMax = function(newMin, newMax) {
-				console.log(this.pos + " " + step);
+			this.setMinMax = function(newMin = this.min, newMax = this.max) {
 				var checkMin = (this.pos + step * (newMin > this.min) > 8),
-					checkMax = (this.pos + step * (newMax > this.max) < parseInt($(this.children[0]).css("width")) + 8);
+					checkMax;
 
 				this.min = newMin;
 				this.max = newMax;
 
 				if (this.orientation == "row") {
+					checkMax = (this.pos + step * (newMax > this.max) < parseInt($(this.children[0]).css("width")) + 8);
+
 					this.pos = (this.value - this.min) * parseInt($(this.children[0]).css("width")) / (this.max - this.min) + 8;
 
 					if (checkMin && checkMax) {
@@ -73,6 +74,8 @@
 						this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + this.max;
 					}
 				} else {
+					checkMax = (this.pos + step * (newMax > this.max) < parseInt($(this.children[0]).css("height")) + 8);
+
 					this.pos = (this.value - this.min) * parseInt($(this.children[0]).css("height")) / (this.max - this.min) + 8;
 
 					if (checkMin && checkMax) {
@@ -148,10 +151,17 @@
 			if (startPoint > this.min && startPoint <= this.max) {
 				if (this.orientation == "row") {
 					this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + startPoint;
+					this.pos = (this.value - this.min) * parseInt($(this.children[0]).css("width")) / (this.max - this.min) + 8;
+					this.children[0].children[0].style.width = this.pos + "px";
+					this.children[1].style.left = this.pos + "px";
 				} else {
 					this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + startPoint;
+					this.pos = (this.value - this.min) * parseInt($(this.children[0]).css("height")) / (this.max - this.min) + 8;
+					this.children[0].children[0].style.height = this.pos + "px";
+					this.children[1].style.top = this.pos + "px";
 				}
-				this.setMinMax();
+				this.setStep();
+				this.setHudPoints();
 			}
 		});
 
