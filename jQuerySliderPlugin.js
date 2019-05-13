@@ -228,7 +228,7 @@
 						this.pos = move + 8;
 						this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + this.value;
 						this.children[1].style.left = this.pos + "px";
-						this.children[0].children[0].style.width = this.pos + "px";
+						this.children[0].children[0].style.width = move + "px";
 					}
 				} else {
 					if (move >= 0 && move <= parseInt($(this.children[0]).css("height"))) {
@@ -236,7 +236,7 @@
 						this.pos = move + 2;
 						this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + this.value;
 						this.children[1].style.top = this.pos + "px";
-						this.children[0].children[0].style.height = this.pos + "px";
+						this.children[0].children[0].style.height = move + "px";
 					}
 				}
 			}

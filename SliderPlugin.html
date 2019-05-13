@@ -10,6 +10,72 @@
 	<div class="container">
 		<div class="block">
 			<div class="content">
+				<div class="slider" id="MVC">
+					<div class="bar">
+						<div class="colored"></div>
+					</div>
+					<div class="pointer">
+						<div class="hint">
+							<div></div>
+						</div>
+					</div>
+					<div class="hud">
+					</div>
+				</div>
+			</div>
+			<div class="config" tab="5">
+				<select class="options">
+					<option>Min</option>
+					<option>Max</option>
+					<option>Step</option>
+					<option>Starting Point</option>
+					<option>Orientation</option>
+					<option>Main Color</option>
+					<option>Show Hint</option>
+					<option>Show Hud</option>
+					<option>Hud numbers interval</option>
+					<option>Pointer tracking</option>
+				</select>
+				<div class="settings">
+					<div>
+						<input type="number" name="">
+					</div>
+					<div>
+						<input type="number" name="">
+					</div>
+					<div>
+						<input type="number" name="" min="0">
+					</div>
+					<div>
+						<input type="number" name="">
+					</div>
+					<div>
+						<select>
+							<option>Row</option>
+							<option>Column</option>
+						</select>
+					</div>
+					<div>
+						<input type="color" name="">
+					</div>
+					<div>
+						<input type="checkbox" name="">Show Hint
+					</div>
+					<div>
+						<input type="checkbox" name="">Show Hud
+					</div>
+					<div>
+						<input type="number" name="">
+					</div>
+					<div>
+						<input type="checkbox" name="">Track
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="block">
+			<div class="content">
 				<div class="slider" id="default">
 					<div class="bar">
 						<div class="colored"></div>
@@ -408,6 +474,7 @@
 
 	<script type="text/javascript" src="jQuery.js"></script>
 	<script type="text/javascript" src="jQuerySliderPlugin.js"></script>
+	<script type="text/javascript" src="SliderInMVC.js"></script>
 	<script type="text/javascript" src="Demonstrate.js"></script>
 </body>
 </html>
