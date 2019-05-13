@@ -54,10 +54,9 @@ div.slider.column div.hint div {
 	left: -4px;
 	border-top: 5px solid transparent;
 	border-bottom: 5px solid transparent;
-	/*border-right: 4px solid #e85f3e;*/
 }
 div.slider.column div.bar {
-	top: 8px;
+	top: 12px;
 	left: 25px;
 	width: 5px;
 	height: 260px;
@@ -68,8 +67,8 @@ div.slider.column div.bar div.colored {
 }
 div.slider.column div.hud {
 	position: absolute;
-	top: 6px;
-	height: 269px;
+	top: 7px;
+	height: 271px;
 	width: 16px;
 	flex-direction: column;
 }
