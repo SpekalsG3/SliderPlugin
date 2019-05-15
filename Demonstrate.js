@@ -1,4 +1,4 @@
-$("#default").AnimateSlider(-100, 100);
+$("#default").AnimateSlider(-100, 100, 1, 0);
 $(".similarSliders").AnimateSlider(0, 200, 5, 120, "row", "#ff6b6b",  false, true, 4, false);
 $("#blueBigSlider").AnimateSlider(200, 500, 100, 250, "row", "#afded7",  true, false, 6, true);
 $("#columnSliderOne").AnimateSlider(5, 10, 1, 0, "column", "#8dc79d", true, true, 5, true);
@@ -11,14 +11,14 @@ var sliders = document.getElementsByClassName("slider"),
 var keys = ["min", "max", "step", "startPoint", "orientation", "mainColor", "hint", "hud", "interval", "track"],
 	values = {},
 	prev = [],
-	thisI = 0,
-	setI = 0;
+	thisI = 1,
+	setI = 1;
 
-for (var i = 0; i < options[0].children.length; i++) {
+for (var i = 1; i < options[0].children.length; i++) {
 	values[options[0].children[i].value] = i;
 }
 
-for (var i = 0; i < options.length; i++) {
+for (var i = 1; i < options.length; i++) {
 	prev[i] = settings[i].children[0];
 
 	for (var j = 0; j < settings[i].children.length; j++) {
