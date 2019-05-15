@@ -14,9 +14,10 @@
 			this.min = min;
 			this.max = max;
 			if (orientation == "row") {
-				this.pos = (startPoint - this.min) * parseInt($(this.children[0]).css("width")) / (this.max - this.min) + 8;
+				console.log(1);
+				this.pointerPosition = (startPoint - this.min) * parseInt($(this.children[0]).css("width")) / (this.max - this.min) + 8;
 			} else {
-				this.pos = (startPoint - this.min) * parseInt($(this.children[0]).css("height")) / (this.max - this.min) + 8;
+				this.pointerPosition = (startPoint - this.min) * parseInt($(this.children[0]).css("height")) / (this.max - this.min) + 8;
 			}
 			this.orientation = orientation;
 
@@ -61,33 +62,34 @@
 			}
 
 			this.setMinMax = function(newMin = this.min, newMax = this.max) {
-				var checkMin = (this.pos + step * (newMin > this.min) > 8),
+				var checkMin = (this.pointerPosition + step * (newMin > this.min) > 8),
 					checkMax;
 
 				this.min = newMin;
 				this.max = newMax;
 
 				if (this.orientation == "row") {
-					checkMax = (this.pos + step * (newMax > this.max) < parseInt($(this.children[0]).css("width")) + 8);
+					checkMax = (this.pointerPosition + step * (newMax > this.max) < parseInt($(this.children[0]).css("width")) + 8);
 
-					this.pos = (this.value - this.min) * parseInt($(this.children[0]).css("width")) / (this.max - this.min) + 8;
+				console.log(2);
+					this.pointerPosition = (this.value - this.min) * parseInt($(this.children[0]).css("width")) / (this.max - this.min) + 8;
 
 					if (checkMin && checkMax) {
-						this.children[0].children[0].style.width = this.pos + "px";
-						this.children[1].style.left = this.pos + "px";
+						this.children[0].children[0].style.width = this.pointerPosition + "px";
+						this.children[1].style.left = this.pointerPosition + "px";
 					} else if (checkMax) {
 						this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + this.min;
 					} else if (checkMin) {
 						this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + this.max;
 					}
 				} else {
-					checkMax = (this.pos + step * (newMax > this.max) < parseInt($(this.children[0]).css("height")) + 8);
+					checkMax = (this.pointerPosition + step * (newMax > this.max) < parseInt($(this.children[0]).css("height")) + 8);
 
-					this.pos = (this.value - this.min) * parseInt($(this.children[0]).css("height")) / (this.max - this.min) + 8;
+					this.pointerPosition = (this.value - this.min) * parseInt($(this.children[0]).css("height")) / (this.max - this.min) + 8;
 
 					if (checkMin && checkMax) {
-						this.children[0].children[0].style.height = this.pos + "px";
-						this.children[1].style.top = this.pos + "px";
+						this.children[0].children[0].style.height = this.pointerPosition + "px";
+						this.children[1].style.top = this.pointerPosition + "px";
 					} else if (checkMax) {
 							this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + this.min;
 					} else if (checkMin) {
@@ -104,7 +106,7 @@
 				this.classList.add(this.orientation);
 
 				if (this.orientation == "row") {
-					this.children[1].style.left = this.pos + "px";
+					this.children[1].style.left = this.pointerPosition + "px";
 					this.children[1].style.top = "32px";
 
 					this.children[1].children[0].children[0].style.borderRight = "5px solid transparent";
@@ -113,7 +115,7 @@
 					this.children[0].children[0].style.width = this.children[0].children[0].style.height;
 					this.children[0].children[0].style.height = "100%";
 				} else {
-					this.children[1].style.top = this.pos - 6 + "px";
+					this.children[1].style.top = this.pointerPosition - 6 + "px";
 					this.children[1].style.left = "17px";
 
 					this.children[1].children[0].children[0].style.borderTop = "5px solid transparent";
@@ -185,14 +187,14 @@
 			if (startPoint > this.min && startPoint <= this.max) {
 				if (this.orientation == "row") {
 					this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + startPoint;
-					this.pos = (this.value - this.min) * parseInt($(this.children[0]).css("width")) / (this.max - this.min) + 8;
-					this.children[0].children[0].style.width = this.pos + "px";
-					this.children[1].style.left = this.pos + "px";
+					this.pointerPosition = (this.value - this.min) * parseInt($(this.children[0]).css("width")) / (this.max - this.min) + 8;
+					this.children[0].children[0].style.width = this.pointerPosition + "px";
+					this.children[1].style.left = this.pointerPosition + "px";
 				} else {
 					this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + startPoint;
-					this.pos = (this.value - this.min) * parseInt($(this.children[0]).css("height")) / (this.max - this.min) + 8;
-					this.children[0].children[0].style.height = this.pos + "px";
-					this.children[1].style.top = this.pos + "px";
+					this.pointerPosition = (this.value - this.min) * parseInt($(this.children[0]).css("height")) / (this.max - this.min) + 8;
+					this.children[0].children[0].style.height = this.pointerPosition + "px";
+					this.children[1].style.top = this.pointerPosition + "px";
 				}
 				this.setStep();
 				this.setHudPoints();
@@ -225,17 +227,17 @@
 				if (this.orientation == "row") {
 					if (move >= 0 && move <= parseInt($(this.children[0]).css("width"))) {
 						this.value = Math.floor((this.max - this.min) * move / parseInt($(this.children[0]).css("width")) + this.min);
-						this.pos = move + 8;
+						this.pointerPosition = move + 8;
 						this.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.mainColor + ';"></div>' + this.value;
-						this.children[1].style.left = this.pos + "px";
+						this.children[1].style.left = this.pointerPosition + "px";
 						this.children[0].children[0].style.width = move + "px";
 					}
 				} else {
 					if (move >= 0 && move <= parseInt($(this.children[0]).css("height"))) {
 						this.value = Math.floor((this.max - this.min) * move / parseInt($(this.children[0]).css("height")) + this.min);
-						this.pos = move + 2;
+						this.pointerPosition = move + 2;
 						this.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.mainColor + ';"></div>' + this.value;
-						this.children[1].style.top = this.pos + "px";
+						this.children[1].style.top = this.pointerPosition + "px";
 						this.children[0].children[0].style.height = move + "px";
 					}
 				}
