@@ -27,10 +27,18 @@ SliderController.prototype.startDragging = function(e) {
 	}
 }
 
-SliderController.prototype.setColor = function() {
-	this.sliderView.element.children[0].children[0].style.background = this.sliderModel.color;
-	this.sliderView.element.children[1].style.background = this.sliderModel.color;
-	this.sliderView.element.children[1].children[0].style.background = this.sliderModel.color;
+SliderController.prototype.setColor = function(color = this.sliderModel.color) {
+	this.sliderView.element.children[0].children[0].style.background = color;
+	this.sliderView.element.children[1].style.background = color;
+	this.sliderView.element.children[1].children[0].style.background = color;
+
+	if (this.sliderModel.orientation == "row") {
+		this.sliderView.element.children[1].children[0].children[0].style.borderTop = "4px solid" + color;
+		this.sliderView.element.children[1].children[0].children[0].style.borderRight = "5px solid transparent";
+	} else {
+		this.sliderView.element.children[1].children[0].children[0].style.borderRight = "4px solid" + color;
+		this.sliderView.element.children[1].children[0].children[0].style.borderTop = "5px solid transparent";
+	}
 }
 
 SliderController.prototype.displayPart = function(el, flag, displayType = "block") {
@@ -70,10 +78,6 @@ SliderController.prototype.setMinMax = function(newMin = this.sliderModel.min, n
 		if (checkMin && checkMax) {
 			this.sliderView.element.children[0].children[0].style.width = this.sliderModel.pointerPosition + "px";
 			this.sliderView.element.children[1].style.left = this.sliderModel.pointerPosition + "px";
-		} else if (checkMax) {
-			this.sliderView.element.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.sliderModel.color + ';"></div>' + this.sliderModel.min;
-		} else if (checkMin) {
-			this.sliderView.element.children[1].children[0].innerHTML = '<div style="border-top: 4px solid ' + this.sliderModel.color + ';"></div>' + this.sliderModel.max;
 		}
 
 	} else {
@@ -83,11 +87,13 @@ SliderController.prototype.setMinMax = function(newMin = this.sliderModel.min, n
 		if (checkMin && checkMax) {
 			this.sliderView.element.children[0].children[0].style.height = this.sliderModel.pointerPosition + "px";
 			this.sliderView.element.children[1].style.top = this.sliderModel.pointerPosition + "px";
-		} else if (checkMax) {
-			this.sliderView.element.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.sliderModel.color + ';"></div>' + this.sliderModel.min;
-		} else if (checkMin) {
-			this.sliderView.element.children[1].children[0].innerHTML = '<div style="border-right: 4px solid ' + this.sliderModel.color + ';"></div>' + this.sliderModel.max;
 		}
+	}
+
+	if (checkMax) {
+		this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.min;
+	} else if (checkMin) {
+		this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.max;
 	}
 
 	this.setStep();
@@ -100,9 +106,17 @@ SliderController.prototype.init = function() {
 	this.sliderView.startDragging = this.startDragging.bind(this);
 	this.sliderView.updateSlider = this.updateSlider.bind(this);
 	this.sliderView.endDragging = this.endDragging.bind(this);
+	this.sliderView.movePointer = this.movePointer.bind(this);
+
+	// this.sliderView.element.addEventListener("mousedown", this.startDragging);
+	// this.sliderView.element.addEventListener("mousemove", this.movePointer);
+	// this.sliderView.element.addEventListener("mouseup", this.endDragging);
+	// this.sliderView.element.addEventListener("mouseleave", this.endDragging);
+	this.sliderView.element.addEventListener("mousemove", this.updateSlider);
+
+	this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.startPoint;
 
 	if (this.sliderModel.orientation == "row") {
-		console.log(this.sliderModel.pointerPosition);
 		this.sliderModel.pointerPosition = (this.sliderModel.pointerPosition - this.sliderModel.min) * parseInt($(this.sliderView.element.children[0]).css("width")) / (this.sliderModel.max - this.sliderModel.min) + 8;
 	} else {
 		this.sliderModel.pointerPosition = (this.sliderModel.pointerPosition - this.sliderModel.min) * parseInt($(this.sliderView.element.children[0]).css("height")) / (this.sliderModel.max - this.sliderModel.min) + 8;
@@ -110,7 +124,13 @@ SliderController.prototype.init = function() {
 
 }
 
-SliderController.prototype.updateSlider = function(e, sliderModelData) {
+SliderController.prototype.updateSlider = function(e) {
+	if (this.sliderModel.startDragCheck) {
+		this.movePointer({ pageX: e.pageX, pageY: e.pageY }, this.sliderModel.getModelData());
+	}
+}
+
+SliderController.prototype.movePointer = function(e, sliderModelData) {
 	var sliderViewModel = {
 		color: sliderModelData.color,
 		orientation: sliderModelData.orientation
@@ -150,15 +170,15 @@ var SliderView = function(element) {
 	this.startDragging = null;
 	this.updateSlider = null;
 	this.endDragging = null;
+	this.movePointer = null;
 }
 
 SliderView.prototype.renderMove = function(sliderViewModel) {
+	this.element.children[1].children[0].children[1].innerHTML = sliderViewModel.value;
 	if (sliderViewModel.orientation == "row") {
-		this.element.children[1].children[0].innerHTML 		= '<div style="border-top: 4px solid ' + sliderViewModel.color + ';"></div>' + sliderViewModel.value;
 		this.element.children[1].style.left 				= sliderViewModel.pointerPosition + "px";
 		this.element.children[0].children[0].style.width 	= sliderViewModel.pointerPosition + "px";
 	} else {
-		this.element.children[1].children[0].innerHTML 		= '<div style="border-right: 4px solid ' + sliderViewModel.color + ';"></div>' + sliderViewModel.value;
 		this.element.children[1].style.top 					= sliderViewModel.pointerPosition + "px";
 		this.element.children[0].children[0].style.height 	= sliderViewModel.pointerPosition + "px";
 	}
@@ -221,5 +241,5 @@ var view = new SliderView(document.getElementById("MVC")),
 
 var controller = new SliderController(view, model);
 
-controller.startDragging({target: $(".pointer")[0], pageX: 100, pageY: 100});
-controller.updateSlider({target: $(".pointer")[0], pageX: 100, pageY: 100}, model.getModelData());
+// controller.startDragging({target: $(".pointer")[0], pageX: 100, pageY: 100});
+// controller.updateSlider({target: $(".pointer")[0], pageX: 100, pageY: 100}, model.getModelData());

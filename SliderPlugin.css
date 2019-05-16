@@ -10,7 +10,7 @@ div.slider.row div.hint {
 	top: -32px;
 	left: -8px;
 }
-div.slider.row div.hint div {
+div.slider.row div.hint div.arrow {
 	top: 24px;
 	left: 13px;
 	border-right: 5px solid transparent;
@@ -49,7 +49,7 @@ div.slider.column div.hint {
 	left: 27px;
 	top: -2px;
 }
-div.slider.column div.hint div {
+div.slider.column div.hint div.arrow {
 	top: 7px;
 	left: -4px;
 	border-top: 5px solid transparent;
@@ -97,11 +97,14 @@ div.slider div.hint {
 	pointer-events: none;
 
 }
-div.slider div.hint div {
+div.slider div.hint div.arrow {
 	content: "";
 	position: absolute;
 	width: 0;
 	height: 0;
+}
+div.slider div.hint div.value {
+	line-height: 24px;
 }
 
 div.slider div.bar {
