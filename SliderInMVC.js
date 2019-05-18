@@ -1,3 +1,18 @@
+(function($) {
+
+	$.fn.AnimateSlider = function(parameters = {}) {
+		
+		for (var i = 0; i < this.length; i++) {
+			var model = new SliderModel(parameters),
+				view = new SliderView(model, this[i]);
+
+			var controller = new SliderController(view, model);
+		}
+
+	}
+
+})(jQuery);
+
 var SliderController = function(sliderView, sliderModel) {
 	this.sliderView = sliderView;
 	this.sliderModel = sliderModel;
@@ -89,7 +104,7 @@ SliderController.prototype.setMinMax = function(newMin = this.sliderModel.min, n
 
 
 SliderController.prototype.init = function() {
-	this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.startPoint;
+	this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.startingPoint;
 
 	if (this.sliderModel.orientation == "row") {
 		this.sliderModel.pointerPosition = (this.sliderModel.pointerPosition - this.sliderModel.min) * parseInt($(this.sliderView.element.children[0]).css("width")) / (this.sliderModel.max - this.sliderModel.min) + 8;
@@ -159,13 +174,18 @@ SliderView.prototype.movePointer = function(e, sliderModelData) {
 	if (sliderModelData.orientation == "row") {
 		if (move >= 0 && move <= parseInt($(this.element.children[0]).css("width"))) {
 			sliderViewModel.value = Math.floor((sliderModelData.max - sliderModelData.min) * move / parseInt($(this.element.children[0]).css("width")) + sliderModelData.min);
+				sliderViewModel.pointerPosition = move + 8;
+		} else {
+			return;
 		}
 	} else {
 		if (move >= 0 && move <= parseInt($(this.element.children[0]).css("height"))) {
 			sliderViewModel.value = Math.floor((sliderModelData.max - sliderModelData.min) * move / parseInt($(this.element.children[0]).css("height")) + sliderModelData.min);
+				sliderViewModel.pointerPosition = move + 2;
+		} else {
+			return;
 		}
 	}
-	sliderViewModel.pointerPosition = move + 8;
 
 	this.sliderModel.value = sliderViewModel.value;
 	this.sliderModel.pointerPosition  = sliderViewModel.pointerPosition;
@@ -190,36 +210,26 @@ SliderView.prototype.renderMove = function(sliderViewModel) {
 	}
 }
 
-var SliderModel = function(params = {}) {
-	this.min = 			params.min 						? params.min 		: 0,
-	this.max = 			params.max 						? params.max 		: 100,
-	this.step = 		params.step 					? params.step 		: 1,
-	this.startPoint = 	params.startPoint 				? params.startPoint : this.min,
-	this.orientation = 	params.orientation == "column" 	? "column" 			: "row",
-	this.color = 		params.color 					? params.color 		: "#e85f3e",
-	this.hint = 		params.hint 					? params.hint 		: true,
-	this.hud = 			params.hud 						? params.hud 		: true,
-	this.interval = 	params.interval 				? params.interval	: 5,
-	this.track = 		params.track 					? params.track 		: true,
+var SliderModel = function(params) {
+	this.min = 			params.min 						? params.min 			: 0,
+	this.max = 			params.max 						? params.max 			: 100,
+	this.step = 		params.step 					? params.step 			: 1,
+	this.startingPoint= params.startingPoint 			? params.startingPoint 	: this.min,
+	this.orientation = 	params.orientation == "column" 	? "column" 				: "row",
+	this.color = 		params.color 					? params.color 			: "#e85f3e",
+	this.hint = 		params.hint != undefined		? params.hint 			: true,
+	this.hud = 			params.hud != undefined			? params.hud 			: true,
+	this.interval = 	params.interval 				? params.interval		: 5,
+	this.track = 		params.track != undefined		? params.track 			: true,
 
 	this.stepValue = this.step;
 	this.started = null;
-	this.pointerPosition = this.startPoint;
-	this.value = this.startPoint;
+	this.pointerPosition = this.startingPoint;
+	this.value = this.startingPoint;
 	this.startDraggingCheck = false;
 };
 
 SliderModel.prototype.getModelData = function() {
-	console.log({
-		min: this.min,
-		max: this.max,
-		step: this.step,
-		orientation: this.orientation,
-		color: this.color,
-		started: this.started,
-		value: this.value,
-		pointerPosition: this.pointerPosition
-	});
 	return {
 		min: this.min,
 		max: this.max,
@@ -234,18 +244,15 @@ SliderModel.prototype.getModelData = function() {
 
 
 
-var parameters = {
-	min: 0,
-	max: 100,
-	step: 10,
-	startPoint: 50,
-	interval: 3
-};
+// var parameters = {
+// 	min: 0,
+// 	max: 100,
+// 	step: 10,
+// 	startingPoint: 50,
+// 	interval: 3
+// };
 
-var model = new SliderModel(parameters),
-	view = new SliderView(model, document.getElementById("MVC"));
+// var model = new SliderModel(parameters),
+// 	view = new SliderView(model, document.getElementById("MVC"));
 
-var controller = new SliderController(view, model);
-
-// controller.startDragging({target: $(".pointer")[0], pageX: 100, pageY: 100});
-// controller.updateSlider({target: $(".pointer")[0], pageX: 100, pageY: 100}, model.getModelData());
+// var controller = new SliderController(view, model);

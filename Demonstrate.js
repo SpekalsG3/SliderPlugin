@@ -1,8 +1,37 @@
-$("#default").AnimateSlider(-100, 100, 1, 0);
-$(".similarSliders").AnimateSlider(0, 200, 5, 120, "row", "#ff6b6b",  false, true, 4, false);
-$("#blueBigSlider").AnimateSlider(200, 500, 100, 250, "row", "#afded7",  true, false, 6, true);
-$("#columnSliderOne").AnimateSlider(5, 10, 1, 0, "column", "#8dc79d", true, true, 5, true);
-$("#columnSliderTwo").AnimateSlider(10, 200, 2, 100, "column", "#7d4db7", false, true, 2, false);
+$("#default").AnimateSlider();
+$(".similarSliders").AnimateSlider({
+	min: 0,
+	max: 200,
+	step: 5,
+	startingPoint: 120,
+	color: "#ff6b6b",
+	hint: false,
+	interval: 4,
+	track: false});
+$("#blueBigSlider").AnimateSlider({
+	min: 200,
+	max: 500,
+	step: 100,
+	startingPoint: 250,
+	color: "#afded7",
+	hud: false,
+	interval: 6});
+$("#columnSliderOne").AnimateSlider({
+	min: 5,
+	max: 10,
+	startingPoint: 0,
+	orientation: "column",
+	color: "#8dc79d"});
+$("#columnSliderTwo").AnimateSlider({
+	min: 10,
+	max: 200,
+	step: 2,
+	startingPoint: 100,
+	orientation: "column",
+	color: "#7d4db7",
+	hint: false,
+	interval: 2,
+	track: false});
 
 var sliders = document.getElementsByClassName("slider"),
 	settings = document.getElementsByClassName("settings"),
@@ -14,11 +43,11 @@ var keys = ["min", "max", "step", "startPoint", "orientation", "mainColor", "hin
 	thisI = 1,
 	setI = 1;
 
-for (var i = 1; i < options[0].children.length; i++) {
+for (var i = 0; i < options[0].children.length; i++) {
 	values[options[0].children[i].value] = i;
 }
 
-for (var i = 1; i < options.length; i++) {
+for (var i = 0; i < options.length; i++) {
 	prev[i] = settings[i].children[0];
 
 	for (var j = 0; j < settings[i].children.length; j++) {
