@@ -77,6 +77,11 @@ div.slider.column div.hud {
 
 div.slider {
 	position: relative;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 div.slider div.pointer {
 	position: absolute;
