@@ -37,11 +37,11 @@ var sliders = document.getElementsByClassName("slider"),
 	settings = document.getElementsByClassName("settings"),
 	options = document.getElementsByClassName("options");
 
-var keys = ["min", "max", "step", "startPoint", "orientation", "mainColor", "hint", "hud", "interval", "track"],
+var keys = ["min", "max", "step", "startingPoint", "orientation", "color", "hint", "hud", "interval", "track"],
 	values = {},
 	prev = [],
-	thisI = 1,
-	setI = 1;
+	thisI = 0,
+	setI = 0;
 
 for (var i = 0; i < options[0].children.length; i++) {
 	values[options[0].children[i].value] = i;
@@ -54,24 +54,24 @@ for (var i = 0; i < options.length; i++) {
 		settings[i].children[j].children[0].oninput = function() {
 			thisI = this.parentNode.parentNode.parentNode.getAttribute("tab");
 			if (this.getAttribute("type") == "checkbox") {
-				sliders[thisI].set(keys[setI], this.checked);
+				sliders[thisI].set(JSON.parse('{"' + keys[setI] + '": ' + this.checked + '}'));
 			} else {
-				sliders[thisI].set(keys[setI], this.value);
+				sliders[thisI].set(JSON.parse('{"' + keys[setI] + '": ' + this.value + '}'));
 			}
 		}
 
 		switch (settings[i].children[j].children[0].getAttribute("type")) {
 			case "number":
 			case "color":
-				settings[i].children[j].children[0].value = sliders[i].settings[j];
+				settings[i].children[j].children[0].value = sliders[i].get(keys[j]);
 				break;
 			case "checkbox":
-				if (sliders[i].settings[j]) {
+				if (sliders[i].get(keys[j])) {
 					settings[i].children[j].children[0].setAttribute("checked","");
 				}
 				break;
 			case null:
-				if (sliders[i].settings[j] == "row") {
+				if (sliders[i].get("orientation") == "row") {
 					settings[i].children[j].children[0].children[0].setAttribute("selected", "");
 				} else {;
 					settings[i].children[j].children[0].children[1].setAttribute("selected", "");

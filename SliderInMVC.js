@@ -24,7 +24,7 @@ Event.prototype.add = function(listener) {
 
 Event.prototype.manage = function(e = {}) {
 	for (var i = 0; i < this.listeners.length; i++) {
-		this.listeners[i](e);
+		return this.listeners[i](e);
 	}
 }
 
@@ -93,9 +93,15 @@ SliderController.prototype.setMinMax = function(newMin = this.sliderModel.min, n
 		checkMax = (this.sliderModel.pointerPosition + this.sliderModel.step * (newMax > this.sliderModel.max) < parseInt($(this.sliderView.element.children[0]).css("width")) + 8);
 		this.sliderModel.pointerPosition = (this.sliderModel.value - this.sliderModel.min) * parseInt($(this.sliderView.element.children[0]).css("width")) / (this.sliderModel.max - this.sliderModel.min) + 8;
 		
+
+	console.log(checkMin + " " + checkMax);
 		if (checkMin && checkMax) {
 			this.sliderView.element.children[0].children[0].style.width = this.sliderModel.pointerPosition + "px";
 			this.sliderView.element.children[1].style.left = this.sliderModel.pointerPosition + "px";
+		} else if (!checkMin) {
+			this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.min;
+		} else if (!checkMax) {
+			this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.max;
 		}
 
 	} else {
@@ -105,13 +111,11 @@ SliderController.prototype.setMinMax = function(newMin = this.sliderModel.min, n
 		if (checkMin && checkMax) {
 			this.sliderView.element.children[0].children[0].style.height = this.sliderModel.pointerPosition + "px";
 			this.sliderView.element.children[1].style.top = this.sliderModel.pointerPosition + "px";
+		} else if (!checkMin) {
+			this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.min;
+		} else if (!checkMax) {
+			this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.max;
 		}
-	}
-
-	if (checkMax) {
-		this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.min;
-	} else if (checkMin) {
-		this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.max;
 	}
 
 	this.setStep();
@@ -191,39 +195,46 @@ SliderController.prototype.renderMove = function(sliderViewModel) {
 }
 
 
+SliderController.prototype.get = function(param) {
+	return this.sliderModel[param];
+}
+
+
 SliderController.prototype.set = function(update) {
-	var key = Object.keys(update)[0];
-	switch (key) {
-		case "min":
-			this.setMinMax(parseInt(update[key]), this.sliderModel.max);
-			break;
-		case "max":
-			this.setMinMax(this.sliderModel.min, parseInt(update[key]));
-			break;
-		case "step":
-			this.setStep(parseInt(update[key]));
-			break;
-		case "startPoint":
-			break;
-		case "orientation":
-			this.updateOrientation(update[key].toLowerCase());
-			break;
-		case "mainColor":
-			this.setColor(update[key]);
-			break;
-		case "hint":
-			this.displayPart(this.sliderView.children[1].children[0], update[key]);
-			break;
-		case "hud":
-			this.displayPart(this.sliderView.children[2], update[key], "flex");
-			break;
-		case "interval":
-			this.sliderModel.interval = update[key];
-			this.setHudPoints();
-			break;
-		case "track":
-			this.displayPart(this.sliderView.children[0].children[0], update[key]);
-			break;
+	for (var i = 0; i < Object.keys(update).length; i++) {
+		var key = Object.keys(update)[i];
+		switch (key) {
+			case "min":
+				this.setMinMax(parseInt(update[key]), this.sliderModel.max);
+				break;
+			case "max":
+				this.setMinMax(this.sliderModel.min, parseInt(update[key]));
+				break;
+			case "step":
+				this.setStep(parseInt(update[key]));
+				break;
+			case "startPoint":
+				break;
+			case "orientation":
+				this.updateOrientation(update[key].toLowerCase());
+				break;
+			case "mainColor":
+				this.setColor(update[key]);
+				break;
+			case "hint":
+				this.displayPart(this.sliderView.element.children[1].children[0], update[key]);
+				break;
+			case "hud":
+				this.displayPart(this.sliderView.element.children[2], update[key], "flex");
+				break;
+			case "interval":
+				this.sliderModel.interval = update[key];
+				this.setHudPoints();
+				break;
+			case "track":
+				this.displayPart(this.sliderView.element.children[0].children[0], update[key]);
+				break;
+		}
 	}
 }
 
@@ -242,6 +253,11 @@ SliderController.prototype.init = function() {
 	this.sliderView.onSettingParams = new Event(this);
 	this.sliderView.onSettingParams.add(function(update) {
 		_this.set(update);
+	});
+
+	this.sliderView.onGettingParams = new Event(this);
+	this.sliderView.onGettingParams.add(function(param) {
+		return _this.get(param);
 	});
 
 	this.sliderView.onStartDraggingPointer = new Event(this);
@@ -267,15 +283,19 @@ function SliderView(model, element) {
 	this.sliderModel = model;
 
 	this.onSettingParams = null;
+	this.onGettingParams = null;
 	this.toUpdateSlider = null;
 	this.onStartDraggingPointer = null;
-	this.onMovingPointer = null;
 	this.onEndingDragging = null;
 
 	var _this = this;
 
 	this.element.set = function(update) {
 		_this.onSettingParams.manage(update);
+	}
+
+	this.element.get = function(param) {
+		return _this.onGettingParams.manage(param);
 	}
 
 	this.element.addEventListener("mousedown", function(e) {
