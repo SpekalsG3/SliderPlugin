@@ -113,5 +113,5 @@
 
 <p>
 <h4>UML-диаграмма</h4>
-<img src="UML.drawio">
+<img src="UML.svg">
 </p>
