@@ -55,6 +55,8 @@ for (var i = 0; i < options.length; i++) {
 			thisI = this.parentNode.parentNode.parentNode.getAttribute("tab");
 			if (this.getAttribute("type") == "checkbox") {
 				sliders[thisI].set(JSON.parse('{"' + keys[setI] + '": ' + this.checked + '}'));
+			} else if (this.getAttribute("type") == null) {
+				sliders[thisI].set(JSON.parse('{"' + keys[setI] + '": "' + this.value.toLowerCase() + '"}'));
 			} else {
 				sliders[thisI].set(JSON.parse('{"' + keys[setI] + '": ' + this.value + '}'));
 			}
