@@ -43,11 +43,23 @@ var keys = ["min", "max", "step", "startingPoint", "orientation", "color", "hint
 	thisI = 0,
 	setI = 0;
 
+
 for (var i = 0; i < options[0].children.length; i++) {
 	values[options[0].children[i].value] = i;
 }
 
 for (var i = 0; i < options.length; i++) {
+	settings[i].children[0].style.display = "block";
+
+	options[i].oninput = function(e) {
+		thisI = parseInt(this.parentNode.getAttribute("tab"));
+		setI = values[this.value];
+
+		prev[thisI].style.display = "none";
+		prev[thisI] = settings[thisI].children[setI];
+		settings[thisI].children[setI].style.display = "block";
+	}
+
 	prev[i] = settings[i].children[0];
 
 	for (var j = 0; j < settings[i].children.length; j++) {
@@ -80,17 +92,6 @@ for (var i = 0; i < options.length; i++) {
 				}
 				break;
 		}
-	}
-
-	settings[i].children[0].style.display = "block";
-
-	options[i].oninput = function(e) {
-		thisI = parseInt(this.parentNode.getAttribute("tab"));
-		setI = values[this.value];
-
-		prev[thisI].style.display = "none";
-		prev[thisI] = settings[thisI].children[setI];
-		settings[thisI].children[setI].style.display = "block";
 	}
 
 

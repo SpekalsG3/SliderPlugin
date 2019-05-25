@@ -1,13 +1,22 @@
 (function($) {
 
 	$.fn.AnimateSlider = function(parameters = {}) {
+		var controller;
+
 		for (var i = 0; i < this.length; i++) {
 			var model = new SliderModel(parameters),
 				view = new SliderView(this[i]);
 
-			var controller = new SliderController(view, model);
+			controller = new SliderController(view, model);
 		}
 
+		this.get = function(value) {
+			return controller.sliderModel.get(value);
+		}
+
+		this.set = function(update) {
+			controller.set(update);
+		}
 	}
 
 })(jQuery);
@@ -349,7 +358,7 @@ SliderModel.prototype.setStep = function(value) {
 }
 
 SliderModel.prototype.get = function(param) {
-	return this[param];
+	return this[param] != undefined ? this[param] : null;
 }
 
 SliderModel.prototype.getHudSettings = function() {
