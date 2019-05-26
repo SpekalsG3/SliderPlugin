@@ -50,6 +50,15 @@ for (var i = 0; i < options[0].children.length; i++) {
 for (var i = 0; i < options.length; i++) {
 	prev[i] = settings[i].children[0];
 
+	options[i].oninput = function(e) {
+		thisI = parseInt(this.parentNode.getAttribute("tab"));
+		setI = values[this.value];
+
+		prev[thisI].style.display = "none";
+		prev[thisI] = settings[thisI].children[setI];
+		settings[thisI].children[setI].style.display = "block";
+	}
+
 	for (var j = 0; j < settings[i].children.length; j++) {
 		settings[i].children[j].children[0].oninput = function() {
 			thisI = this.parentNode.parentNode.parentNode.getAttribute("tab");
@@ -84,14 +93,30 @@ for (var i = 0; i < options.length; i++) {
 
 	settings[i].children[0].style.display = "block";
 
-	options[i].oninput = function(e) {
-		thisI = parseInt(this.parentNode.getAttribute("tab"));
-		setI = values[this.value];
-
-		prev[thisI].style.display = "none";
-		prev[thisI] = settings[thisI].children[setI];
-		settings[thisI].children[setI].style.display = "block";
+	sliders[i].onChangingParameters = function(update) {
+		var el = settings[Object.values(sliders).indexOf(this)].children[update.parameterIndex].children[0];
+		switch (update.parameter) {
+			case "hint":
+			case "hud":
+			case "track":
+				if (update.toValue) {
+					el.setAttribute("checked", "");
+				} else {
+					el.removeAttribute("checked", "");
+				}
+				break;
+			case "orientation":
+				if (update.toValue == "row") {
+					el.children[1].removeAttribute("selected");
+					el.children[0].setAttribute("selected", "");
+				} else {
+					el.children[0].removeAttribute("selected");
+					el.children[1].setAttribute("selected", "");
+				}
+				break;
+			default:
+				el.value = update.toValue;
+				break;
+		}
 	}
-
-
 }

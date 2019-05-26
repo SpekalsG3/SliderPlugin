@@ -17,6 +17,8 @@
 		this.set = function(update) {
 			controller.set(update);
 		}
+
+		return this;
 	}
 
 })(jQuery);
@@ -216,41 +218,72 @@ SliderController.prototype.setMinMax = function(newMin = this.sliderModel.min, n
 SliderController.prototype.set = function(update) {
 	for (var i = 0; i < Object.keys(update).length; i++) {
 		var key = Object.keys(update)[i];
+		var parameterIndex, toValue, setted = true;
+		var _this = this;
 		switch (key) {
 			case "min":
-				this.setMinMax(parseInt(update[key]), this.sliderModel.max);
+				parameterIndex = 0;
+				toValue = parseInt(update[key]);
+				this.setMinMax(parseInt(update[key]), this.sliderModel.get("max"));
 				break;
 			case "max":
-				this.setMinMax(this.sliderModel.min, parseInt(update[key]));
+				parameterIndex = 1;
+				toValue = parseInt(update[key]);
+				this.setMinMax(this.sliderModel.get("min"), parseInt(update[key]));
 				break;
 			case "step":
+				parameterIndex = 2;
+				toValue = parseInt(update[key]);
 				this.sliderModel.setStep(parseInt(update[key]));
 				break;
 			case "startingPoint":
 				break;
 			case "orientation":
+				parameterIndex = 4;
+				toValue = update[key];
 				this.updateOrientation(update[key].toLowerCase());
 				break;
 			case "color":
+				parameterIndex = 5;
+				toValue = update[key];
 				this.sliderModel.color = update[key];
 				this.sliderView.setColor(this.sliderModel.get("orientation"), update[key]);
 				break;
 			case "hint":
+				parameterIndex = 6;
+				toValue = update[key];
 				this.sliderModel.hint = update[key];
 				this.sliderView.displayPart(this.sliderView.element.children[1].children[0], update[key]);
 				break;
 			case "hud":
+				parameterIndex = 7;
+				toValue = update[key];
 				this.sliderModel.hud = update[key];
 				this.sliderView.displayPart(this.sliderView.element.children[2], update[key], "flex");
 				break;
 			case "interval":
+				parameterIndex = 8;
+				toValue = update[key];
 				this.sliderModel.interval = update[key];
 				this.sliderView.setHudPoints(this.sliderModel.getHudSettings());
 				break;
 			case "track":
+				parameterIndex = 9;
+				toValue = update[key];
 				this.sliderModel.track = update[key];
 				this.sliderView.displayPart(this.sliderView.element.children[0].children[0], update[key]);
 				break;
+			default:
+				setted = false;
+		}
+		if (setted) {
+			console.log(2);
+			this.sliderView.element.onChangingParameters({
+				parameter: key,
+				parameterIndex: parameterIndex,
+				fromValue: _this.sliderModel.get(key),
+				toValue: toValue
+			});
 		}
 	}
 }
@@ -259,11 +292,13 @@ SliderController.prototype.set = function(update) {
 function SliderView(element) {
 	this.element = element;
 
-	this.onSettingParams = new Event(this);
-	this.onGettingParams = new Event(this);
-	this.toUpdateSlider = new Event(this);
-	this.onStartDraggingPointer = new Event(this);
-	this.onEndingDragging = new Event(this);
+	this.onSettingParams = new Event();
+	this.onGettingParams = new Event();
+	this.toUpdateSlider = new Event();
+	this.onStartDraggingPointer = new Event();
+	this.onEndingDragging = new Event();
+
+	this.element.onChangingParameters = function(){};
 
 	var _this = this;
 
