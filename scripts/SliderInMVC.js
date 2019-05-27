@@ -144,25 +144,23 @@ SliderController.prototype.updateSlider = function(e) {
 
 SliderController.prototype.movePointer = function(e, sliderModelData) {
 	var sliderViewModel = {
-		color: sliderModelData.color,
 		orientation: sliderModelData.orientation
 	};
 
 	var move;
 	if (sliderModelData.orientation == "row") {
 		move = Math.round((e.pageX - sliderModelData.started - 16) / sliderModelData.step) * sliderModelData.step;
-		console.log((e.pageX - sliderModelData.started - 16));
 	} else {
 		move = Math.round((e.pageY - sliderModelData.started - 10) / sliderModelData.step) * sliderModelData.step;
 	}
 
 	if (move >= 0 && move <= this.sliderModel.size) {
 		if (sliderModelData.orientation == "row") {
-			sliderViewModel.value = Math.floor((sliderModelData.max - sliderModelData.min) * move / this.sliderModel.size + sliderModelData.min);
-			sliderViewModel.pointerPosition = move + 8;
+				sliderViewModel.value = Math.floor((sliderModelData.max - sliderModelData.min) * move / this.sliderModel.size + sliderModelData.min);
+					sliderViewModel.pointerPosition = move + 8;
 		} else {
-			sliderViewModel.value = Math.floor((sliderModelData.max - sliderModelData.min) * move / this.sliderModel.size + sliderModelData.min);
-			sliderViewModel.pointerPosition = move + 2;
+				sliderViewModel.value = Math.floor((sliderModelData.max - sliderModelData.min) * move / this.sliderModel.size + sliderModelData.min);
+					sliderViewModel.pointerPosition = move + 2;
 		}
 	} else {
 		return;
@@ -178,33 +176,30 @@ SliderController.prototype.endDragging = function() {
 	this.sliderModel.startDragCheck = false;
 }
 
-SliderController.prototype.setMinMax = function(newMin, newMax) {
-	var checkMin = (this.sliderModel.pointerPosition + this.sliderModel.step * (newMin > this.sliderModel.min) > 8),
-		checkMax = (this.sliderModel.pointerPosition + this.sliderModel.step * (newMax > this.sliderModel.max) < this.sliderModel.size + 8);
+SliderController.prototype.setMinMax = function(newMin = this.sliderModel.min, newMax = this.sliderModel.max) {
+	//var checkMin = (this.sliderModel.pointerPosition + this.sliderModel.step * (newMin > this.sliderModel.min) > 8),
+	//	checkMax = (this.sliderModel.pointerPosition + this.sliderModel.step * (newMax > this.sliderModel.max) < this.sliderModel.size + 8);
+
+	var checkMin = newMin > this.sliderModel.value,
+		checkMax = newMax < this.sliderModel.value;
 
 	this.sliderModel.min = newMin;
 	this.sliderModel.max = newMax;
 
-	this.sliderModel.pointerPosition = (this.sliderModel.value - this.sliderModel.min) * this.sliderModel.size / (this.sliderModel.max - this.sliderModel.min) + 8;
-
-	if (this.sliderModel.orientation == "row") {
-		if (checkMin && checkMax) {
-			this.sliderView.element.children[0].children[0].style.width = this.sliderModel.pointerPosition + "px";
-			this.sliderView.element.children[1].style.left = this.sliderModel.pointerPosition + "px";
-		} else if (!checkMin) {
-			this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.min;
-		} else if (!checkMax) {
-			this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.max;
-		}
+	if (checkMin) {
+		this.sliderModel.value = this.sliderModel.min;
+		this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.min;
+	} else if (checkMax) {
+		this.sliderModel.value = this.sliderModel.max;
+		this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.max;
 	} else {
-		if (checkMin && checkMax) {
-			this.sliderView.element.children[0].children[0].style.height = this.sliderModel.pointerPosition + "px";
-			this.sliderView.element.children[1].style.top = this.sliderModel.pointerPosition + "px";
-		} else if (!checkMin) {
-			this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.min;
-		} else if (!checkMax) {
-			this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.max;
-		}
+		this.sliderModel.pointerPosition = (this.sliderModel.value - this.sliderModel.min) * this.sliderModel.size / (this.sliderModel.max - this.sliderModel.min) + 8;
+
+		this.sliderView.renderMove({
+			pointerPosition: this.sliderModel.pointerPosition,
+			orientation: this.sliderModel.orientation,
+			value: this.sliderModel.value
+		});
 	}
 
 	this.sliderModel.setStep(this.sliderModel.get("stepValue"));
