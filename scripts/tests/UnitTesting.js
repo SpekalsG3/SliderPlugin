@@ -43,7 +43,6 @@ describe("Setting parameters", function() {
 	it ("установить параметр \"color\"", function(){
 		testSlider.set( {"color": "#d99ae2"} );
 		assert.equal(testSlider.get("color"), "#d99ae2");
-		console.log(testSlider[0].children[0].style)
 		assert.equal($(testSlider[0].children[1]).css("background-color"), "rgb(217, 154, 226)");
 		assert.equal($(testSlider[0].children[1].children[0]).css("background-color"), "rgb(217, 154, 226)");
 		assert.equal($(testSlider[0].children[1].children[0].children[0]).css("border-right"), "4px solid rgb(217, 154, 226)");

@@ -151,24 +151,21 @@ SliderController.prototype.movePointer = function(e, sliderModelData) {
 	var move;
 	if (sliderModelData.orientation == "row") {
 		move = Math.round((e.pageX - sliderModelData.started - 16) / sliderModelData.step) * sliderModelData.step;
+		console.log((e.pageX - sliderModelData.started - 16));
 	} else {
 		move = Math.round((e.pageY - sliderModelData.started - 10) / sliderModelData.step) * sliderModelData.step;
 	}
 
-	if (sliderModelData.orientation == "row") {
-		if (move >= 0 && move <= this.sliderModel.size) {
+	if (move >= 0 && move <= this.sliderModel.size) {
+		if (sliderModelData.orientation == "row") {
 			sliderViewModel.value = Math.floor((sliderModelData.max - sliderModelData.min) * move / this.sliderModel.size + sliderModelData.min);
-				sliderViewModel.pointerPosition = move + 8;
+			sliderViewModel.pointerPosition = move + 8;
 		} else {
-			return;
+			sliderViewModel.value = Math.floor((sliderModelData.max - sliderModelData.min) * move / this.sliderModel.size + sliderModelData.min);
+			sliderViewModel.pointerPosition = move + 2;
 		}
 	} else {
-		if (move >= 0 && move <= this.sliderModel.size) {
-			sliderViewModel.value = Math.floor((sliderModelData.max - sliderModelData.min) * move / this.sliderModel.size + sliderModelData.min);
-				sliderViewModel.pointerPosition = move + 2;
-		} else {
-			return;
-		}
+		return;
 	}
 
 	this.sliderModel.value = sliderViewModel.value;
@@ -181,7 +178,7 @@ SliderController.prototype.endDragging = function() {
 	this.sliderModel.startDragCheck = false;
 }
 
-SliderController.prototype.setMinMax = function(newMin = this.sliderModel.min, newMax = this.sliderModel.max) {
+SliderController.prototype.setMinMax = function(newMin, newMax) {
 	var checkMin = (this.sliderModel.pointerPosition + this.sliderModel.step * (newMin > this.sliderModel.min) > 8),
 		checkMax = (this.sliderModel.pointerPosition + this.sliderModel.step * (newMax > this.sliderModel.max) < this.sliderModel.size + 8);
 
@@ -199,7 +196,6 @@ SliderController.prototype.setMinMax = function(newMin = this.sliderModel.min, n
 		} else if (!checkMax) {
 			this.sliderView.element.children[1].children[0].children[1].innerHTML = this.sliderModel.max;
 		}
-
 	} else {
 		if (checkMin && checkMax) {
 			this.sliderView.element.children[0].children[0].style.height = this.sliderModel.pointerPosition + "px";
@@ -277,7 +273,6 @@ SliderController.prototype.set = function(update) {
 				setted = false;
 		}
 		if (setted) {
-			console.log(2);
 			this.sliderView.element.onChangingParameters({
 				parameter: key,
 				parameterIndex: parameterIndex,
