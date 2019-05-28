@@ -94,29 +94,32 @@ for (var i = 0; i < options.length; i++) {
 	settings[i].children[0].style.display = "block";
 
 	sliders[i].onChangingParameters = function(update) {
-		var el = settings[Object.values(sliders).indexOf(this)].children[update.parameterIndex].children[0];
-		switch (update.parameter) {
-			case "hint":
-			case "hud":
-			case "track":
-				if (update.toValue) {
-					el.setAttribute("checked", "");
-				} else {
-					el.removeAttribute("checked", "");
-				}
-				break;
-			case "orientation":
-				if (update.toValue == "row") {
-					el.children[1].removeAttribute("selected");
-					el.children[0].setAttribute("selected", "");
-				} else {
-					el.children[0].removeAttribute("selected");
-					el.children[1].setAttribute("selected", "");
-				}
-				break;
-			default:
-				el.value = update.toValue;
-				break;
+		for (var i = 0; i < Object.keys(update).length; i++) {
+			var obj = update[Object.keys(update)[i]];
+			var el = settings[Object.values(sliders).indexOf(this)].children[obj.parameterIndex].children[0];
+			switch (obj.parameter) {
+				case "hint":
+				case "hud":
+				case "track":
+					if (obj.toValue) {
+						el.setAttribute("checked", "");
+					} else {
+						el.removeAttribute("checked", "");
+					}
+					break;
+				case "orientation":
+					if (obj.toValue == "row") {
+						el.children[1].removeAttribute("selected");
+						el.children[0].setAttribute("selected", "");
+					} else {
+						el.children[0].removeAttribute("selected");
+						el.children[1].setAttribute("selected", "");
+					}
+					break;
+				default:
+					el.value = obj.toValue;
+					break;
+			}
 		}
 	}
 }
