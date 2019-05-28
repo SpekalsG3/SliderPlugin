@@ -9,7 +9,7 @@ testSlider.AnimateSlider();
 
 var assert = chai.assert;
 
-describe("Getting parameters", function() {
+describe("Получение параметров", function() {
 
 	it ("получить параметр \"max\"", function(){
 		assert.equal(testSlider.get("max"), 100);
@@ -29,7 +29,7 @@ describe("Getting parameters", function() {
 
 });
 
-describe("Setting parameters", function() {
+describe("Установка параметров", function() {
 
 	it ("установить параметр \"min\"", function(){
 		testSlider.set( {"min": 50} );
@@ -59,6 +59,128 @@ describe("Setting parameters", function() {
 		testSlider.set( {"interval": 3, "unknown": 100} );
 		assert.equal(testSlider.get("unknown"), null);
 		assert.equal(testSlider.get("unknown"), null);
+	});
+
+});
+
+describe("Обраобтчик установки параметров", function() {
+	var update;
+
+	it("установить обработчик", function() {
+		testSlider.onChangingParameters = function(_update) {
+			update = _update;
+		}
+		testSlider.set( {min: 10} );
+		assert.notEqual(update[0], undefined);
+		assert.equal(update[0].parameter, "min");
+		assert.equal(update[0].parameterIndex, 0);
+		assert.equal(update[0].fromValue, 50);
+		assert.equal(update[0].toValue, 10);
+		assert.equal(settings[6].children[0].children[0].value, 0);
+	});
+
+	it("обработчик с обновлением конфига", function() {
+		testSlider.onChangingParameters = function(_update) {
+			update = _update;
+			for (var i = 0; i < Object.keys(update).length; i++) {
+				var obj = update[Object.keys(update)[i]];
+				var el = settings[Object.values(sliders).indexOf(this)].children[obj.parameterIndex].children[0];
+				switch (obj.parameter) {
+					case "hint":
+					case "hud":
+					case "track":
+						if (obj.toValue) {
+							el.setAttribute("checked", "");
+						} else {
+							el.removeAttribute("checked", "");
+						}
+						break;
+					case "orientation":
+						if (obj.toValue == "row") {
+							el.children[1].removeAttribute("selected");
+							el.children[0].setAttribute("selected", "");
+						} else {
+							el.children[0].removeAttribute("selected");
+							el.children[1].setAttribute("selected", "");
+						}
+						break;
+					default:
+						el.value = obj.toValue;
+						break;
+				}
+			}
+		}
+		testSlider.set( {orientation: "row", min: 50} );
+		assert.notEqual(update[0], undefined);
+		assert.notEqual(update[1], undefined);
+		assert.equal(update[0].parameter, "orientation");
+		assert.equal(update[0].parameterIndex, 4);
+		assert.equal(update[0].fromValue, "column");
+		assert.equal(update[0].toValue, "row");
+		assert.equal(settings[6].children[4].children[0].children[0].getAttribute("selected"), "");
+		assert.equal(settings[6].children[4].children[0].children[1].getAttribute("selected"), null);
+		assert.equal(update[1].parameter, "min");
+		assert.equal(update[1].parameterIndex, 0);
+		assert.equal(update[1].fromValue, 10);
+		assert.equal(update[1].toValue, 50);
+		assert.equal(testSlider.get("min"), 50);
+	});
+
+});
+
+describe("Нажатие мышью", function() {
+
+	it("нажатие на подсказку", function() {
+		testSlider[0].onmousedown( {target: testSlider[0].children[1].children[0]} );
+		assert.equal(testSlider.get("startDragCheck"), false);
+	});
+
+	it("нажатие на полоску", function() {
+		testSlider[0].onmousedown( {target: testSlider[0].children[0]} );
+		assert.equal(testSlider.get("startDragCheck"), false);
+	});
+
+	it("нажатие на указатель", function() {
+		testSlider[0].onmousedown( {name: "asshole", target: testSlider[0].children[1]} );
+		assert.equal(testSlider.get("startDragCheck"), true);
+	});
+
+});
+
+var lastX;
+
+describe("Движение мыши", function() {
+
+	it("движение по слайдеру", function() {
+		var x = 50;
+		testSlider[0].onmousemove( {pageX: $(testSlider[0].children[0]).position().left + x} );
+		assert.equal(testSlider.get("value"), testSlider.get("min") + Math.round(x * (testSlider.get("max") - testSlider.get("min")) / testSlider.get("size")));
+
+		x = 100;
+		lastX = testSlider.get("min") + Math.round(x * (testSlider.get("max") - testSlider.get("min")) / testSlider.get("size"));
+		testSlider[0].onmousemove( {pageX: $(testSlider[0].children[0]).position().left + x} );
+		assert.equal(testSlider.get("value"), lastX);
+	});
+
+});
+
+describe("Прекращение движения", function() {
+
+	it("поднятие клавиши мыши", function() {
+		assert.equal(testSlider.get("startDragCheck"), true);
+		testSlider[0].onmouseup();
+		assert.equal(testSlider.get("startDragCheck"), false);
+		testSlider[0].onmousemove( {pageX: $(testSlider[0].children[0]).position().left + 100} );
+		assert.equal(testSlider.get("value"), lastX);
+	});
+
+	it("передвижение ползунка за слайдер", function() {
+		testSlider[0].onmousedown( {name: "asshole", target: testSlider[0].children[1]} );
+		assert.equal(testSlider.get("startDragCheck"), true);
+		testSlider[0].onmouseleave();
+		assert.equal(testSlider.get("startDragCheck"), false);
+		testSlider[0].onmousemove( {pageX: $(testSlider[0].children[0]).position().left + 100} );
+		assert.equal(testSlider.get("value"), lastX);
 	});
 
 });
