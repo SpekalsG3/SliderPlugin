@@ -1,30 +1,62 @@
 body {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+
+    -webkit-box-direction: normal;
+       -webkit-box-orient: vertical;
+       -ms-flex-direction: column;
+           flex-direction: column;
+
+    -webkit-box-pack: center;
+       -ms-flex-pack: center;
+     justify-content: center;
 }
-div.container {
-	width: 500px;
-	display: flex;
-	flex-wrap: wrap;
+.container {
+    width: 500px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
 }
 
-div.block {
-	width: 100%;
-	display: flex;
+.block {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 10px;
 }
-div.content {
-	width: 300px;
-	height: 100%;
-	display: flex;
-	justify-content: center;
+.content {
+    width: 300px;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+       -ms-flex-pack: center;
+     justify-content: center;
 }
-div.config {
-	position: relative;
-	width: 200px;
-	height: 100%;
-	outline: 1px solid aqua;
+.config {
+    position: relative;
+    width: 200px;
+    height: 100%;
+    outline: 1px solid aqua;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+       -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+       -ms-flex-direction: column;
+           flex-direction: column;
+    -webkit-box-pack: center;
+       -ms-flex-pack: center;
+     justify-content: center;
+    -webkit-box-align: center;
+       -ms-flex-align: center;
+          align-items: center;
 }
-div.settings div {
-	display: none;
+.settings div {
+    display: none;
 }
