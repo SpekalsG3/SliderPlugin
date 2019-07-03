@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="styles\Demonstrate.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/2.1.0/mocha.css" />
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <link rel="shortcut icon" type="image/png" href="favicon.png" />
 </head>
 <body>
     <div class="container">
@@ -39,7 +40,7 @@
                     <option>Hud numbers interval</option>
                     <option>Pointer tracking</option>
                 </select>
-                <div class="settings">
+                <form class="settings">
                     <div>
                         <input type="number" />
                     </div>
@@ -71,9 +72,9 @@
                         <input type="number" />
                     </div>
                     <div>
-                        <input type="checkbox">Track pointe /r
+                        <input type="checkbox" />Track pointer
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <div class="block">
@@ -105,7 +106,7 @@
                     <option>Hud numbers interval</option>
                     <option>Pointer tracking</option>
                 </select>
-                <div class="settings">
+                <form class="settings">
                     <div>
                         <input type="number" />
                     </div>
@@ -137,9 +138,9 @@
                         <input type="number" />
                     </div>
                     <div>
-                        <input type="checkbox">Track pointe /r
+                        <input type="checkbox" />Track pointer
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <div class="block">
@@ -171,7 +172,7 @@
                     <option>Hud numbers interval</option>
                     <option>Pointer tracking</option>
                 </select>
-                <div class="settings">
+                <form class="settings">
                     <div>
                         <input type="number" />
                     </div>
@@ -203,9 +204,9 @@
                         <input type="number" />
                     </div>
                     <div>
-                        <input type="checkbox">Track pointe /r
+                        <input type="checkbox" />Track pointer
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <div class="block">
@@ -237,7 +238,7 @@
                     <option>Hud numbers interval</option>
                     <option>Pointer tracking</option>
                 </select>
-                <div class="settings">
+                <form class="settings">
                     <div>
                         <input type="number" />
                     </div>
@@ -269,9 +270,9 @@
                         <input type="number" />
                     </div>
                     <div>
-                        <input type="checkbox">Track pointe /r
+                        <input type="checkbox" />Track pointer
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <div class="block">
@@ -303,7 +304,7 @@
                     <option>Hud numbers interval</option>
                     <option>Pointer tracking</option>
                 </select>
-                <div class="settings">
+                <form class="settings">
                     <div>
                         <input type="number" />
                     </div>
@@ -335,9 +336,9 @@
                         <input type="number" />
                     </div>
                     <div>
-                        <input type="checkbox">Track pointe /r
+                        <input type="checkbox" />Track pointer
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <div class="block">
@@ -369,7 +370,7 @@
                     <option>Hud numbers interval</option>
                     <option>Pointer tracking</option>
                 </select>
-                <div class="settings">
+                <form class="settings">
                     <div>
                         <input type="number" />
                     </div>
@@ -401,9 +402,9 @@
                         <input type="number" />
                     </div>
                     <div>
-                        <input type="checkbox">Track pointe /r
+                        <input type="checkbox" />Track pointer
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <div class="block">
@@ -435,7 +436,7 @@
                     <option>Hud numbers interval</option>
                     <option>Pointer tracking</option>
                 </select>
-                <div class="settings">
+                <form class="settings">
                     <div>
                         <input type="number" />
                     </div>
@@ -467,18 +468,25 @@
                         <input type="number" />
                     </div>
                     <div>
-                        <input type="checkbox">Track pointe /r
+                        <input type="checkbox" />Track pointer
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
 
     <script type="text/javascript" src="scripts\jQuery.js"></script>
-    <script type="text/javascript" src="scripts\SliderInMVC.js"></script>
+
+    <script type="text/javascript" src="scripts\components\Event.js"></script>
+    <script type="text/javascript" src="scripts\components\SliderView.js"></script>
+    <script type="text/javascript" src="scripts\components\SliderModel.js"></script>
+    <script type="text/javascript" src="scripts\components\SliderController.js"></script>
+    <script type="text/javascript" src="scripts\main.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/2.0.0/chai.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/2.1.0/mocha.js"></script>
     <script type="text/javascript" src="scripts/tests/UnitTesting.js"></script>
+
     <script type="text/javascript" src="scripts\demonstrate\Demonstrate.js"></script>
 </body>
 </html>

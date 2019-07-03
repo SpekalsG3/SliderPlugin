@@ -1,7 +1,7 @@
 (function($) {
     $.fn.AnimateSlider = function(min, max, step = 1, startPoint = min, orientation = "row", mainColor = "#e85f3e", hint = true, hud = true, interval = 5, track = true) {
 
-        this.startDragCheck = false;
+        this.isDragStarted = false;
 
         this.each(function() {
             this.onselectstart = function() {
@@ -60,11 +60,11 @@
                 }
             }
 
-            this.setMinMax = function(newMin = this.min, newMax = this.max) {
-                var checkMin = (this.pointerPosition + step * (newMin > this.min) > 8),
+            this.setminMax = function(newmin = this.min, newMax = this.max) {
+                var checkmin = (this.pointerPosition + step * (newmin > this.min) > 8),
                     checkMax;
 
-                this.min = newMin;
+                this.min = newmin;
                 this.max = newMax;
 
                 if (this.orientation == "row") {
@@ -72,12 +72,12 @@
 
                     this.pointerPosition = (this.value - this.min) * parseInt($(this.children[0]).css("width")) / (this.max - this.min) + 8;
 
-                    if (checkMin && checkMax) {
+                    if (checkmin && checkMax) {
                         this.children[0].children[0].style.width = this.pointerPosition + "px";
                         this.children[1].style.left = this.pointerPosition + "px";
                     } else if (checkMax) {
                         this.children[1].children[0].children[1].innerHTML = this.min;
-                    } else if (checkMin) {
+                    } else if (checkmin) {
                         this.children[1].children[0].children[1].innerHTML = this.max;
                     }
                 } else {
@@ -85,12 +85,12 @@
 
                     this.pointerPosition = (this.value - this.min) * parseInt($(this.children[0]).css("height")) / (this.max - this.min) + 8;
 
-                    if (checkMin && checkMax) {
+                    if (checkmin && checkMax) {
                         this.children[0].children[0].style.height = this.pointerPosition + "px";
                         this.children[1].style.top = this.pointerPosition + "px";
                     } else if (checkMax) {
                             this.children[1].children[0].children[1].innerHTML = this.min;
-                    } else if (checkMin) {
+                    } else if (checkmin) {
                         this.children[1].children[0].children[1].innerHTML = this.max;
                     }
                 }
@@ -129,10 +129,10 @@
 
                 switch (param) {
                     case "min":
-                        this.setMinMax(parseInt(value), this.max);
+                        this.setminMax(parseInt(value), this.max);
                         break;
                     case "max":
-                        this.setMinMax(this.min, parseInt(value));
+                        this.setminMax(this.min, parseInt(value));
                         break;
                     case "step":
                         this.setStep(parseInt(value));
@@ -201,7 +201,7 @@
 
         this.mousedown(function(e) {
             if (!Object.values($(".pointer")).includes(e.target)) {
-                this.startDragCheck = false;
+                this.isDragStarted = false;
                 return;
             }
 
@@ -210,11 +210,11 @@
             } else {
                 this.started = $(this).position().top;
             }
-            this.startDragCheck = true;
+            this.isDragStarted = true;
         });
 
         this.mousemove(function(e) {
-            if (this.startDragCheck) {
+            if (this.isDragStarted) {
                 var move;
                 if (this.orientation == "row") {
                     move = Math.round((e.pageX - this.started - 16) / this.step) * this.step;
@@ -243,10 +243,10 @@
         });
 
         this.mouseup(function() {
-            this.startDragCheck = false;
+            this.isDragStarted = false;
         });
         this.mouseleave(function() {
-            this.startDragCheck = false;
+            this.isDragStarted = false;
         });
 
     }

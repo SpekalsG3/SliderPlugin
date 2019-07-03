@@ -1,138 +1,138 @@
 .slider.row {
-    width: 295px;
-    height: 68px;
+  width: 295px;
+  height: 68px;
 }
 .slider.row .pointer {
-    top: 32px;
-    left: 8px;
+  top: 32px;
+  left: 8px;
 }
 .slider.row .hint {
-    top: -32px;
-    left: -8px;
+  top: -32px;
+  left: -8px;
 }
 .arrow {
-    top: 24px;
-    left: 13px;
-    border-right: 5px solid transparent;
-    border-left: 5px solid transparent;
+  top: 24px;
+  left: 13px;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
 }
 .slider.row .bar {
-    top: 40px;
-    left: 18px;
-    width: 260px;
-    height: 5px;
+  top: 40px;
+  left: 18px;
+  width: 260px;
+  height: 5px;
 }
 .slider.row .colored {
-    height: 100%;
-    width: 0;
+  height: 100%;
+  width: 0;
 }
 .slider.row .hud {
-    position: relative;
-    top: 47px;
-    height: 16px;
-    left: 16px;
-    width: 268px;
-       -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-       -ms-flex-direction: row;
-           flex-direction: row;
+  position: relative;
+  top: 47px;
+  height: 16px;
+  left: 16px;
+  width: 268px;
+     -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+     -ms-flex-direction: row;
+         flex-direction: row;
 }
 
 .slider.column {
-    width: 79px;
-    height: 284px;
+  width: 79px;
+  height: 284px;
 }
 .slider.column .pointer {
-    background: #e85f3e;
-    top: 2px;
-    left: 17px;
+  background: #e85f3e;
+  top: 4px;
+  left: 17px;
 }
 .slider.column .hint {
-    background: #e85f3e;
-    left: 27px;
-    top: -2px;
+  background: #e85f3e;
+  left: 27px;
+  top: -2px;
 }
 .slider.column .arrow {
-    top: 7px;
-    left: -4px;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
+  top: 7px;
+  left: -4px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
 }
 .slider.column .bar {
-    top: 12px;
-    left: 25px;
-    width: 5px;
-    height: 260px;
+  top: 18px;
+  left: 25px;
+  width: 5px;
+  height: 260px;
 }
 .slider.column .colored {
-    height: 0;
-    width: 100%;
+  height: 0;
+  width: 100%;
 }
 .slider.column .hud {
-    position: absolute;
-    top: 7px;
-    height: 271px;
-    width: 16px;
-       -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-       -ms-flex-direction: column;
-           flex-direction: column;
+  position: absolute;
+  top: 15px;
+  height: 271px;
+  width: 16px;
+     -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+     -ms-flex-direction: column;
+         flex-direction: column;
 }
 
 .slider {
-    position: relative;
-    -webkit-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
+  position: relative;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 .pointer {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border-radius: 50px;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
 }
 
 .hint {
-    position: relative;
-    width: 35px;
-    height: 24px;
-    font-size: 12px;
-    color: white;
-    text-align: center;
-    line-height: 24px;
-    border-radius: 5px;
-    pointer-events: none;
+  position: relative;
+  width: 35px;
+  height: 24px;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  line-height: 24px;
+  border-radius: 5px;
+  pointer-events: none;
 
 }
 .arrow {
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 0;
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
 }
 .value {
-    line-height: 24px;
+  line-height: 24px;
 }
 
 .bar {
-    position: relative;
-    overflow: hidden;
-    border-radius: 10px;
-    background: #f3f3f3;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f3f3f3;
 }
 
 .hud {
-    position: relative;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: justify;
-       -ms-flex-pack: justify;
-     justify-content: space-between;
-    -webkit-box-align: center;
-       -ms-flex-align: center;
-          align-items: center;
-    color: #a7a7a7;
-    font-size: 10px;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+     -ms-flex-pack: justify;
+   justify-content: space-between;
+  -webkit-box-align: center;
+     -ms-flex-align: center;
+        align-items: center;
+  color: #a7a7a7;
+  font-size: 10px;
 }

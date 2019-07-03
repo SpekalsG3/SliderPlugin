@@ -37,47 +37,47 @@ var sliders = document.getElementsByClassName("slider");
 var settings = document.getElementsByClassName("settings");
 var options = document.getElementsByClassName("options");
 
-var keys = ["min", "max", "step", "startingPoint", "orientation", "color", "hint", "hud", "interval", "track"];
-var values = {};
-var prev = [];
-var thisI = 0;
-var setI = 0;
+var settingsList = ["min", "max", "stepValue", "startingPoint", "orientation", "color", "hint", "hud", "interval", "track"];
+var possibleSettingValues = {};
+var prevSetting = [];
+var currentSetting = 0;
+var settingValue = 0;
 
 for (var i = 0; i < options[0].children.length; i++) {
-    values[options[0].children[i].value] = i;
+    possibleSettingValues[options[0].children[i].value] = i;
 }
 
 for (var i = 0; i < options.length; i++) {
-    prev[i] = settings[i].children[0];
+    prevSetting[i] = settings[i].children[0];
 
     options[i].oninput = function(e) {
-        thisI = parseInt(this.parentNode.getAttribute("data-tab"));
-        setI = values[this.value];
+        currentSetting = parseInt(this.parentNode.getAttribute("data-tab"));
+        settingValue = possibleSettingValues[this.value];
 
-        prev[thisI].style.display = "none";
-        prev[thisI] = settings[thisI].children[setI];
-        settings[thisI].children[setI].style.display = "block";
+        prevSetting[currentSetting].style.display = "none";
+        prevSetting[currentSetting] = settings[currentSetting].children[settingValue];
+        settings[currentSetting].children[settingValue].style.display = "block";
     }
 
     for (var j = 0; j < settings[i].children.length; j++) {
         settings[i].children[j].children[0].oninput = function() {
-            thisI = this.parentNode.parentNode.parentNode.getAttribute("data-tab");
+            currentSetting = this.parentNode.parentNode.parentNode.getAttribute("data-tab");
             if (this.getAttribute("type") == "checkbox") {
-                sliders[thisI].set(JSON.parse('{"' + keys[setI] + '": ' + this.checked + '}'));
+                sliders[currentSetting].set(JSON.parse('{"' + settingsList[settingValue] + '": ' + this.checked + '}'));
             } else if (this.getAttribute("type") == null) {
-                sliders[thisI].set(JSON.parse('{"' + keys[setI] + '": "' + this.value.toLowerCase() + '"}'));
+                sliders[currentSetting].set(JSON.parse('{"' + settingsList[settingValue] + '": "' + this.value.toLowerCase() + '"}'));
             } else {
-                sliders[thisI].set(JSON.parse('{"' + keys[setI] + '": ' + this.value + '}'));
+                sliders[currentSetting].set(JSON.parse('{"' + settingsList[settingValue] + '": ' + this.value + '}'));
             }
         }
 
         switch (settings[i].children[j].children[0].getAttribute("type")) {
             case "number":
             case "color":
-                settings[i].children[j].children[0].value = sliders[i].get(keys[j]);
+                settings[i].children[j].children[0].value = sliders[i].get(settingsList[j]);
                 break;
             case "checkbox":
-                if (sliders[i].get(keys[j])) {
+                if (sliders[i].get(settingsList[j])) {
                     settings[i].children[j].children[0].setAttribute("checked","");
                 }
                 break;
@@ -95,29 +95,29 @@ for (var i = 0; i < options.length; i++) {
 
     sliders[i].onChangingParameters = function(update) {
         for (var i = 0; i < Object.keys(update).length; i++) {
-            var obj = update[Object.keys(update)[i]];
-            var el = settings[Object.values(sliders).indexOf(this)].children[obj.parameterIndex].children[0];
-            switch (obj.parameter) {
+            var setted = update[Object.keys(update)[i]];
+            var effectedSlider = settings[Object.values(sliders).indexOf(this)].children[setted.parameterIndex].children[0];
+            switch (setted.parameter) {
                 case "hint":
                 case "hud":
                 case "track":
-                    if (obj.toValue) {
-                        el.setAttribute("checked", "");
+                    if (setted.toValue) {
+                        effectedSlider.setAttribute("checked", "");
                     } else {
-                        el.removeAttribute("checked", "");
+                        effectedSlider.removeAttribute("checked", "");
                     }
                     break;
                 case "orientation":
-                    if (obj.toValue == "row") {
-                        el.children[1].removeAttribute("selected");
-                        el.children[0].setAttribute("selected", "");
+                    if (setted.toValue == "row") {
+                        effectedSlider.children[1].removeAttribute("selected");
+                        effectedSlider.children[0].setAttribute("selected", "");
                     } else {
-                        el.children[0].removeAttribute("selected");
-                        el.children[1].setAttribute("selected", "");
+                        effectedSlider.children[0].removeAttribute("selected");
+                        effectedSlider.children[1].setAttribute("selected", "");
                     }
                     break;
                 default:
-                    el.value = obj.toValue;
+                    effectedSlider.value = setted.toValue;
                     break;
             }
         }

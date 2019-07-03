@@ -4,27 +4,27 @@ document.body.appendChild(TestsDisplay);
 
 mocha.setup("bdd");
 
-var testSlider = $("#test");
-testSlider.AnimateSlider();
+var $testSlider = $("#test");
+$testSlider.AnimateSlider();
 
 var assert = chai.assert;
 
 describe("Получение параметров", function() {
 
     it ("получить параметр \"max\"", function(){
-        assert.equal(testSlider.get("max"), 100);
+        assert.equal($testSlider.get("max"), 100);
     });
     it ("получить параметр \"orientation\"", function(){
-        assert.equal(testSlider.get("orientation"), "row");
+        assert.equal($testSlider.get("orientation"), "row");
     });
     it ("получить параметр \"color\"", function(){
-        assert.equal(testSlider.get("color"), "#e85f3e");
+        assert.equal($testSlider.get("color"), "#e85f3e");
     });
     it ("получить параметр \"hud\"", function(){
-        assert.equal(testSlider.get("hud"), true);
+        assert.equal($testSlider.get("hud"), true);
     });
     it ("получить несуществующий параметр ", function(){
-        assert.equal(testSlider.get("unknown"), null);
+        assert.equal($testSlider.get("unknown"), null);
     });
 
 });
@@ -32,45 +32,45 @@ describe("Получение параметров", function() {
 describe("Установка параметров", function() {
 
     it ("установить параметр \"min\"", function(){
-        testSlider.set( {"min": 50} );
-        assert.equal(testSlider.get("min"), 50);
-        assert.equal(testSlider[0].children[1].children[0].children[1].innerHTML, "50");
+        $testSlider.set( {"min": 50} );
+        assert.equal($testSlider.get("min"), 50);
+        assert.equal($testSlider[0].children[1].children[0].children[1].innerHTML, "50");
     });
     it ("установить параметр \"orientation\"", function(){
-        testSlider.set( {"orientation": "column"} );
-        assert.equal(testSlider.get("orientation"), "column");
+        $testSlider.set( {"orientation": "column"} );
+        assert.equal($testSlider.get("orientation"), "column");
     });
     it ("установить параметр \"color\"", function(){
-        testSlider.set( {"color": "#d99ae2"} );
-        assert.equal(testSlider.get("color"), "#d99ae2");
-        assert.equal($(testSlider[0].children[1]).css("background-color"), "rgb(217, 154, 226)");
-        assert.equal($(testSlider[0].children[1].children[0]).css("background-color"), "rgb(217, 154, 226)");
-        assert.equal($(testSlider[0].children[1].children[0].children[0]).css("border-right"), "4px solid rgb(217, 154, 226)");
+        $testSlider.set( {"color": "#d99ae2"} );
+        assert.equal($testSlider.get("color"), "#d99ae2");
+        assert.equal($($testSlider[0].children[1]).css("background-color"), "rgb(217, 154, 226)");
+        assert.equal($($testSlider[0].children[1].children[0]).css("background-color"), "rgb(217, 154, 226)");
+        assert.equal($testSlider[0].children[1].children[0].children[0].style.borderRight, "4px solid rgb(217, 154, 226)");
     });
     it ("установить параметр \"hud\"", function(){
-        testSlider.set( {"hud": false} );
-        assert.equal(testSlider.get("hud"), false);
+        $testSlider.set( {"hud": false} );
+        assert.equal($testSlider.get("hud"), false);
     });
     it ("установить несуществующий параметр ", function(){
-        testSlider.set( {"unknown": 100} );
-        assert.equal(testSlider.get("unknown"), null);
+        $testSlider.set( {"unknown": 100} );
+        assert.equal($testSlider.get("unknown"), null);
     });
     it ("установить параметр \"interval\" и несуществующий параметр", function(){
-        testSlider.set( {"interval": 3, "unknown": 100} );
-        assert.equal(testSlider.get("unknown"), null);
-        assert.equal(testSlider.get("unknown"), null);
+        $testSlider.set( {"interval": 3, "unknown": 100} );
+        assert.equal($testSlider.get("unknown"), null);
+        assert.equal($testSlider.get("unknown"), null);
     });
 
 });
 
-describe("Обраобтчик установки параметров", function() {
+describe("Обработчик установки параметров", function() {
     var update;
 
     it("установить обработчик", function() {
-        testSlider.onChangingParameters = function(_update) {
+        $testSlider.onChangingParameters = function(_update) {
             update = _update;
         }
-        testSlider.set( {min: 10} );
+        $testSlider.set( {min: 10} );
         assert.notEqual(update[0], undefined);
         assert.equal(update[0].parameter, "min");
         assert.equal(update[0].parameterIndex, 0);
@@ -80,7 +80,7 @@ describe("Обраобтчик установки параметров", functio
     });
 
     it("обработчик с обновлением конфига", function() {
-        testSlider.onChangingParameters = function(_update) {
+        $testSlider.onChangingParameters = function(_update) {
             update = _update;
             for (var i = 0; i < Object.keys(update).length; i++) {
                 var obj = update[Object.keys(update)[i]];
@@ -110,7 +110,7 @@ describe("Обраобтчик установки параметров", functio
                 }
             }
         }
-        testSlider.set( {orientation: "row", min: 50} );
+        $testSlider.set( {orientation: "row", min: 50} );
         assert.notEqual(update[0], undefined);
         assert.notEqual(update[1], undefined);
         assert.equal(update[0].parameter, "orientation");
@@ -123,7 +123,7 @@ describe("Обраобтчик установки параметров", functio
         assert.equal(update[1].parameterIndex, 0);
         assert.equal(update[1].fromValue, 10);
         assert.equal(update[1].toValue, 50);
-        assert.equal(testSlider.get("min"), 50);
+        assert.equal($testSlider.get("min"), 50);
     });
 
 });
@@ -131,35 +131,41 @@ describe("Обраобтчик установки параметров", functio
 describe("Нажатие мышью", function() {
 
     it("нажатие на подсказку", function() {
-        testSlider[0].onmousedown( {target: testSlider[0].children[1].children[0]} );
-        assert.equal(testSlider.get("startDragCheck"), false);
+        $testSlider[0].onmousedown( {
+            target: $testSlider[0].children[1].children[0],
+            path: [$testSlider[0], $testSlider[0].children[1], $testSlider[0].children[1].children[0]] } );
+        assert.equal($testSlider.get("isDragStarted"), false);
     });
 
     it("нажатие на полоску", function() {
-        testSlider[0].onmousedown( {target: testSlider[0].children[0]} );
-        assert.equal(testSlider.get("startDragCheck"), false);
+        $testSlider[0].onmousedown( {
+            target: $testSlider[0].children[0],
+            path: [$testSlider[0], $testSlider[0].children[0]] } );
+        assert.equal($testSlider.get("isDragStarted"), false);
     });
 
     it("нажатие на указатель", function() {
-        testSlider[0].onmousedown( {name: "tester", target: testSlider[0].children[1]} );
-        assert.equal(testSlider.get("startDragCheck"), true);
+        $testSlider[0].onmousedown( {name: "tester", target: $testSlider[0].children[1]} );
+        assert.equal($testSlider.get("isDragStarted"), true);
     });
 
 });
 
-var lastX;
+var lastValue;
 
 describe("Движение мыши", function() {
 
     it("движение по слайдеру", function() {
         var x = 50;
-        testSlider[0].onmousemove( {pageX: $(testSlider[0].children[0]).position().left + x} );
-        assert.equal(testSlider.get("value"), testSlider.get("min") + Math.round(x * (testSlider.get("max") - testSlider.get("min")) / testSlider.get("size")));
+        $testSlider[0].onmousemove( {pageX: $($testSlider[0].children[0]).position().left + x} );
+
+        lastValue = Math.round(($testSlider.get("max") - $testSlider.get("min")) * Math.round((x) / $testSlider.get("step")) * $testSlider.get("step") / $testSlider.get("size") + $testSlider.get("min"));
+        assert.equal($testSlider.get("value"), lastValue);
 
         x = 100;
-        lastX = testSlider.get("min") + Math.round(x * (testSlider.get("max") - testSlider.get("min")) / testSlider.get("size"));
-        testSlider[0].onmousemove( {pageX: $(testSlider[0].children[0]).position().left + x} );
-        assert.equal(testSlider.get("value"), lastX);
+        lastValue = $testSlider.get("min") + Math.round(x * ($testSlider.get("max") - $testSlider.get("min")) / $testSlider.get("size"));
+        $testSlider[0].onmousemove( {pageX: $($testSlider[0].children[0]).position().left + x} );
+        assert.equal($testSlider.get("value"), lastValue);
     });
 
 });
@@ -167,20 +173,20 @@ describe("Движение мыши", function() {
 describe("Прекращение движения", function() {
 
     it("поднятие клавиши мыши", function() {
-        assert.equal(testSlider.get("startDragCheck"), true);
-        testSlider[0].onmouseup();
-        assert.equal(testSlider.get("startDragCheck"), false);
-        testSlider[0].onmousemove( {pageX: $(testSlider[0].children[0]).position().left + 100} );
-        assert.equal(testSlider.get("value"), lastX);
+        assert.equal($testSlider.get("isDragStarted"), true);
+        $testSlider[0].onmouseup();
+        assert.equal($testSlider.get("isDragStarted"), false);
+        $testSlider[0].onmousemove( {pageX: $($testSlider[0].children[0]).position().left + 100} );
+        assert.equal($testSlider.get("value"), lastValue);
     });
 
     it("передвижение ползунка за слайдер", function() {
-        testSlider[0].onmousedown( {name: "tester", target: testSlider[0].children[1]} );
-        assert.equal(testSlider.get("startDragCheck"), true);
-        testSlider[0].onmouseleave();
-        assert.equal(testSlider.get("startDragCheck"), false);
-        testSlider[0].onmousemove( {pageX: $(testSlider[0].children[0]).position().left + 100} );
-        assert.equal(testSlider.get("value"), lastX);
+        $testSlider[0].onmousedown( {name: "tester", target: $testSlider[0].children[1]} );
+        assert.equal($testSlider.get("isDragStarted"), true);
+        $testSlider[0].onmouseleave();
+        assert.equal($testSlider.get("isDragStarted"), false);
+        $testSlider[0].onmousemove( {pageX: $($testSlider[0].children[0]).position().left + 100} );
+        assert.equal($testSlider.get("value"), lastValue);
     });
 
 });
