@@ -157,14 +157,14 @@ describe("Движение мыши", function() {
 
     it("движение по слайдеру", function() {
         var x = 50;
-        $testSlider[0].onmousemove( {pageX: $($testSlider[0].children[0]).position().left + x} );
+        $testSlider[0].onmousemove( {pageX: $testSlider.position().left + x} );
+        lastValue = Math.floor(($testSlider.get("max") - $testSlider.get("min")) * Math.round((x-16) / $testSlider.get("step")) * $testSlider.get("step") / $testSlider.get("size")) + $testSlider.get("min");
 
-        lastValue = Math.round(($testSlider.get("max") - $testSlider.get("min")) * Math.round((x) / $testSlider.get("step")) * $testSlider.get("step") / $testSlider.get("size") + $testSlider.get("min"));
         assert.equal($testSlider.get("value"), lastValue);
 
         x = 100;
-        lastValue = $testSlider.get("min") + Math.round(x * ($testSlider.get("max") - $testSlider.get("min")) / $testSlider.get("size"));
-        $testSlider[0].onmousemove( {pageX: $($testSlider[0].children[0]).position().left + x} );
+        $testSlider[0].onmousemove( {pageX: $testSlider.position().left + x} );
+        lastValue = Math.floor(($testSlider.get("max") - $testSlider.get("min")) * Math.round((x-16) / $testSlider.get("step")) * $testSlider.get("step") / $testSlider.get("size")) + $testSlider.get("min");
         assert.equal($testSlider.get("value"), lastValue);
     });
 
@@ -176,7 +176,7 @@ describe("Прекращение движения", function() {
         assert.equal($testSlider.get("isDragStarted"), true);
         $testSlider[0].onmouseup();
         assert.equal($testSlider.get("isDragStarted"), false);
-        $testSlider[0].onmousemove( {pageX: $($testSlider[0].children[0]).position().left + 100} );
+        $testSlider[0].onmousemove( {pageX: $testSlider.position().left + 100} );
         assert.equal($testSlider.get("value"), lastValue);
     });
 
@@ -185,7 +185,7 @@ describe("Прекращение движения", function() {
         assert.equal($testSlider.get("isDragStarted"), true);
         $testSlider[0].onmouseleave();
         assert.equal($testSlider.get("isDragStarted"), false);
-        $testSlider[0].onmousemove( {pageX: $($testSlider[0].children[0]).position().left + 100} );
+        $testSlider[0].onmousemove( {pageX: $testSlider.position().left + 100} );
         assert.equal($testSlider.get("value"), lastValue);
     });
 

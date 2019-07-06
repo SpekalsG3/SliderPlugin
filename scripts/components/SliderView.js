@@ -77,6 +77,6 @@ SliderView.prototype.displayPart = function(part, flag, displayType = "block") {
 SliderView.prototype.setHudPoints = function(sliderViewModel) {
     this.element.children[2].innerHTML = "";
     for (var i = 0; i < sliderViewModel.interval; i++) {
-        $(this.element.children[2]).append("<div>" + Math.floor(sliderViewModel.min + (sliderViewModel.max-sliderViewModel.min) / (sliderViewModel.interval-1) * i) + "</div>");
+        $(this.element.children[2]).append("<div>" + Math.round(sliderViewModel.min + (sliderViewModel.max-sliderViewModel.min) / (sliderViewModel.interval-1) * i) + "</div>");
     }
 }

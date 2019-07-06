@@ -142,8 +142,8 @@ SliderController.prototype.setOrientation = function(orientation) {
         this.sliderView.element.children[1].style.top = this.sliderModel.pointerPosition + "px";
         this.sliderView.element.children[1].style.left = "17px";
 
-        this.sliderView.element.children[1].children[0].children[0].style.borderTop = "5px solid transparent";
         this.sliderView.element.children[1].children[0].children[0].style.borderRight = "4px solid " + this.sliderModel.color;
+        this.sliderView.element.children[1].children[0].children[0].style.borderTop = "5px solid transparent";
 
         this.sliderView.element.children[2].style.left = 0;
 

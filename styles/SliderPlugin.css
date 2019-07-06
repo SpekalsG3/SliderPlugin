@@ -1,32 +1,32 @@
-.slider.row {
+.row {
   width: 295px;
   height: 68px;
 }
-.slider.row .pointer {
+.row .pointer {
   top: 32px;
   left: 8px;
 }
-.slider.row .hint {
+.row .hint {
   top: -32px;
   left: -8px;
 }
-.arrow {
+.row .arrow {
   top: 24px;
   left: 13px;
   border-right: 5px solid transparent;
   border-left: 5px solid transparent;
 }
-.slider.row .bar {
+.row .bar {
   top: 40px;
   left: 18px;
   width: 260px;
   height: 5px;
 }
-.slider.row .colored {
+.row .colored {
   height: 100%;
   width: 0;
 }
-.slider.row .hud {
+.row .hud {
   position: relative;
   top: 47px;
   height: 16px;
@@ -38,37 +38,37 @@
          flex-direction: row;
 }
 
-.slider.column {
+.column {
   width: 79px;
   height: 284px;
 }
-.slider.column .pointer {
+.column .pointer {
   background: #e85f3e;
   top: 4px;
   left: 17px;
 }
-.slider.column .hint {
+.column .hint {
   background: #e85f3e;
   left: 27px;
   top: -2px;
 }
-.slider.column .arrow {
+.column .arrow {
   top: 7px;
   left: -4px;
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
 }
-.slider.column .bar {
+.column .bar {
   top: 18px;
   left: 25px;
   width: 5px;
   height: 260px;
 }
-.slider.column .colored {
+.column .colored {
   height: 0;
   width: 100%;
 }
-.slider.column .hud {
+.column .hud {
   position: absolute;
   top: 15px;
   height: 271px;
