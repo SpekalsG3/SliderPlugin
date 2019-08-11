@@ -1,6 +1,8 @@
 <p>
 <h2>Документация к плагину</h2>
 
+<p><a href="https://spekalsg3.github.io/SliderPlugin">spekalsg3.github.io/SliderPlugin</a> - демонстрационная страница</p>
+
 <hr>
 
 <p>
